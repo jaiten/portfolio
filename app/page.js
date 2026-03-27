@@ -1,10 +1,9 @@
 import ResumeScrollStack from "@/components/resume-scroll-stack";
-import HeroScrollIndicator from "@/components/hero-scroll-indicator";
 import SocialLinks from "@/components/social-links";
 
 const navLinks = [
   { label: "Experience", href: "#experience" },
-  { label: "Build Next", href: "#build-next" },
+  { label: "Focus", href: "#focus" },
   { label: "Skills", href: "#skills" }
 ];
 
@@ -18,98 +17,125 @@ const timelineItems = [
   {
     kind: "Experience",
     title: "Orca Medical",
-    role: "Co-Founder + Lead Frontend Developer",
-    period: "May to Dec 2025",
+    role: "Co-Founder / Lead Frontend Developer",
+    period: "May-Dec 2025",
     location: "Montreal, Canada",
     summary:
-      "Co-founded a health-tech startup and led the mobile product experience for a self-triage app aimed at improving access to non-emergency care.",
+      "Co-founded a health-tech startup and built the frontend for a mobile self-triage app focused on non-emergency care.",
     bullets: [
-      "Built the app in React Native and Expo with multi-step symptom intake and triage workflows.",
-      "Integrated a 3D anatomical body model using Blender and Three.js to make symptom selection more intuitive.",
-      "Drove product direction through Figma prototypes, feature scoping, and frontend architecture decisions."
+      "Built the app in React Native and Expo, including multi-step symptom intake and triage flows.",
+      "Integrated a 3D body model with Blender and Three.js to make symptom selection easier.",
+      "Handled product direction, Figma prototyping, and frontend architecture as the product took shape."
     ],
+    projectLink: {
+      label: "View Project",
+      href: "",
+      enabled: false
+    },
     tags: ["React Native", "Expo", "Three.js", "Figma"]
   },
   {
     kind: "Experience",
     title: "Gravity Computers",
     role: "Desktop Support Technician / Team Lead",
-    period: "Summers 2020 to 2025",
+    period: "Summer 2020-2025",
     location: "Vancouver, Canada",
     summary:
-      "Delivered support across business environments while taking ownership of troubleshooting, deployments, and operational improvements.",
+      "Provided day-to-day IT support across business environments while taking on deployments, escalations, and team coordination.",
     bullets: [
       "Supported more than 250 devices across hardware, software, and network issues.",
-      "Configured operating systems, SaaS tooling, and workstation rollouts while cutting setup time by 15 percent.",
-      "Led teammates and process improvements that reduced recurring technical issues by 20 percent."
+      "Set up operating systems, SaaS accounts, and workstation rollouts, cutting setup time by 15%.",
+      "Led teammates and improved support processes, reducing recurring issues by 20%."
     ],
+    projectLink: {
+      label: "View Project",
+      href: "",
+      enabled: false
+    },
     tags: ["Windows", "Microsoft 365", "Google Workspace", "IT Ops"]
   },
   {
     kind: "Project",
     title: "Gravity Computers Website",
-    role: "Marketing Site / Production Build",
-    period: "Sept to Nov 2025",
+    role: "Website Design / Development",
+    period: "Sep-Nov 2025",
     location: "Client Work",
-    summary:
-      "Built a polished business website for an IT and cybersecurity company with a stronger focus on credibility, performance, and conversion.",
+    summary: "Built the company website for an IT and cybersecurity business.",
     bullets: [
-      "Used Next.js App Router, TypeScript, and Tailwind CSS for a fast and accessible frontend.",
+      "Built the site with Next.js App Router, TypeScript, and Tailwind CSS.",
       "Implemented a secure contact flow with serverless routes, validation, and Google reCAPTCHA.",
-      "Focused on responsive UI and motion details to make the brand feel more premium."
+      "Focused on responsive layout, performance, and interaction details."
     ],
+    projectLink: {
+      label: "View Project",
+      href: "https://www.gravitycomputers.com/",
+      enabled: true
+    },
     tags: ["Next.js", "TypeScript", "Tailwind", "reCAPTCHA"]
   },
   {
     kind: "Project",
     title: "ADVSB",
-    role: "Advanced Schedule Builder",
-    period: "Sept to Dec 2024",
+    role: "Full-Stack Web Application",
+    period: "Sep-Dec 2024",
     location: "Academic Project",
     summary:
-      "Created a full-stack student platform for course planning, schedule building, progress tracking, and lightweight social features.",
+      "Built a full-stack platform for course planning, schedule building, and degree progress tracking.",
     bullets: [
-      "Built authentication, course scheduling, and student management workflows with JavaScript, PHP, and SQL.",
-      "Added analytics and exports using Chart.js and jsPDF to help students compare and save plans.",
-      "Designed a responsive interface that kept complex scheduling flows usable."
+      "Implemented authentication, scheduling, and student management features with JavaScript, PHP, and SQL.",
+      "Added charts and PDF exports with Chart.js and jsPDF.",
+      "Designed the interface around complex scheduling flows so it stayed usable."
     ],
+    projectLink: {
+      label: "View Project",
+      href: "",
+      enabled: false
+    },
     tags: ["JavaScript", "PHP", "SQL", "Chart.js"]
   },
   {
     kind: "Project",
     title: "RxRemind",
-    role: "Prescription Reminder Platform",
-    period: "Jan to Feb 2023",
+    role: "Prescription Reminder Web App",
+    period: "Jan-Feb 2023",
     location: "Healthcare Web App",
     summary:
-      "Built a doctor-facing web application for managing prescriptions and automating SMS medication reminders.",
+      "Built a web app for managing prescriptions and sending SMS medication reminders.",
     bullets: [
-      "Created a React frontend for patient and prescription workflows.",
-      "Used Node.js and MongoDB for backend processing and persistence.",
-      "Integrated Twilio to trigger reminder delivery and support status tracking."
+      "Built the React frontend for doctor and patient workflows.",
+      "Used Node.js and MongoDB for backend logic and data storage.",
+      "Integrated Twilio for automated reminder delivery and status tracking."
     ],
+    projectLink: {
+      label: "View Project",
+      href: "",
+      enabled: false
+    },
     tags: ["React", "Node.js", "MongoDB", "Twilio"]
   }
 ];
 
-const nextBuilds = [
+const focusAreas = [
   {
-    title: "Concurrent HTTP Server",
+    title: "Networking and concurrency",
     description:
-      "Build a Linux-first HTTP server in C or C++ with epoll, keep-alive connections, routing, and a thread pool.",
-    outcome: "Strong signal for networking, concurrency, and performance engineering."
+      "Build a Linux-first HTTP server in C or C++ with epoll, keep-alive handling, routing, and a thread pool.",
+    outcome:
+      "I want this to sharpen my systems programming and performance fundamentals."
   },
   {
-    title: "Redis-Style Key-Value Store",
+    title: "Storage and persistence",
     description:
-      "Implement TCP command handling, in-memory storage, TTL expiration, and append-only persistence.",
-    outcome: "Shows systems design, data structures, and storage fundamentals."
+      "Build a Redis-style key-value store with TCP command parsing, in-memory storage, TTL expiration, and append-only persistence.",
+    outcome:
+      "I want this to push me further on protocol design, data structures, and persistence."
   },
   {
-    title: "Custom Memory Allocator",
+    title: "Memory internals",
     description:
-      "Write a malloc/free replacement with free lists, coalescing, and fragmentation benchmarks.",
-    outcome: "High-value low-level project that stands out on systems-oriented resumes."
+      "Write a custom allocator with free lists, coalescing, and fragmentation benchmarks.",
+    outcome:
+      "I want this to give me a better understanding of memory behavior at a lower level."
   }
 ];
 
@@ -157,39 +183,37 @@ export default function HomePage() {
           <div className="hero-copy">
             <span className="eyebrow">Software Engineer / Portfolio</span>
             <h1>
-              Clean product work with a serious interest in <em>systems depth</em>.
+              I build clean software and care about{" "}
+              <em>how it works underneath</em>.
             </h1>
             <p className="hero-text">
-              I&apos;m a McGill computer science student with experience across
-              startup product work, production frontend engineering, and
-              technical operations. I care about clean interfaces, strong
-              implementation, and pushing further into low-level systems and
-              performance.
+              I&apos;m a McGill computer science student with experience in
+              startup product work, frontend engineering, and technical
+              support. I like clean interfaces, straightforward code, and
+              getting deeper into backend, systems, and performance work.
             </p>
             <div className="hero-actions">
               <a className="button button-primary" href="#experience">
                 View Experience
               </a>
-              <a className="button button-secondary" href="#build-next">
-                Future Systems Projects
+              <a className="button button-secondary" href="#focus">
+                Current Focus
               </a>
             </div>
-            <HeroScrollIndicator />
           </div>
 
           <aside className="hero-aside">
             <div className="hero-aside-card">
-              <div className="section-label">Introduction</div>
+              <div className="section-label">At a Glance</div>
               <ul className="intro-points">
                 <li>McGill University, B.Sc. Computer Science</li>
-                <li>Product-focused frontend engineering</li>
-                <li>Growing into systems and low-level work</li>
+                <li>Startup, client, and support experience</li>
+                <li>Interested in backend, systems, and performance</li>
               </ul>
               <p>
-                I&apos;m targeting real full-time software roles and building this
-                site to support that. I&apos;m still open to exceptional internships,
-                but this is meant to read as a professional portfolio rather than
-                an internship landing page.
+                This site is a selection of the work I&apos;ve done so far. Most
+                of it has been frontend-heavy, but I&apos;m deliberately spending
+                more time on lower-level and systems-oriented projects.
               </p>
             </div>
           </aside>
@@ -198,13 +222,13 @@ export default function HomePage() {
 
       <ResumeScrollStack items={timelineItems} />
 
-      <section className="section build-section" id="build-next">
+      <section className="section build-section" id="focus">
         <div className="section-heading">
-          <div className="section-label">Build Next</div>
-          <h2>Projects that would strengthen the systems side of my resume.</h2>
+          <div className="section-label">Current Focus</div>
+          <h2>What I&apos;m focusing on next.</h2>
         </div>
         <div className="build-grid">
-          {nextBuilds.map((project, index) => (
+          {focusAreas.map((project, index) => (
             <article className="build-card" key={project.title}>
               <span className="project-index">0{index + 1}</span>
               <h3>{project.title}</h3>
@@ -221,7 +245,7 @@ export default function HomePage() {
             <div className="section-label">Education</div>
             <h2>McGill University</h2>
             <p>
-              Bachelor of Science in Computer Science, 2021 to 2026. Coursework
+              B.Sc. in Computer Science, 2021-2026. Relevant coursework
               includes algorithm design, concurrent programming, software
               design, databases, machine learning, and data structures.
             </p>

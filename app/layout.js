@@ -2,8 +2,9 @@ import CursorHalo from "@/components/cursor-halo";
 import "./globals.css";
 
 export const metadata = {
-  title: "Jaiten Portfolio",
-  description: "Animated geometric portfolio experience built with Next.js."
+  title: "Jaiten Kang | Portfolio",
+  description:
+    "Portfolio of Jaiten Kang, a McGill computer science student building software across frontend, product, and systems work."
 };
 
 export default function RootLayout({ children }) {

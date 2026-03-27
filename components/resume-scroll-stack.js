@@ -52,6 +52,23 @@ function getNextStackState(nodes) {
   return { activeIndex, itemProgress };
 }
 
+function ProjectLinkButton({ projectLink }) {
+  if (!projectLink?.enabled || !projectLink?.href) {
+    return null;
+  }
+
+  return (
+    <a
+      className="resume-project-link"
+      href={projectLink.href}
+      rel="noreferrer"
+      target="_blank"
+    >
+      {projectLink.label || "View Project"}
+    </a>
+  );
+}
+
 export default function ResumeScrollStack({ items }) {
   const rowRefs = useRef([]);
   const [stackState, setStackState] = useState(() =>
@@ -98,11 +115,11 @@ export default function ResumeScrollStack({ items }) {
     <section className="resume-shell section" id="experience">
       <div className="resume-intro">
         <div className="section-label">Experience / Projects</div>
-        <h2>A sticky stack that reveals more of the work as you scroll.</h2>
+        <h2>Work I&apos;ve done across startup, client, and academic projects.</h2>
         <p>
-          Orca Medical lands first. Keep scrolling and the next role rises from
-          underneath it, then the next one after that, so the section feels
-          layered and deliberate instead of reading like a flat list.
+          Most of my experience so far has been frontend and product-focused,
+          with a mix of startup work, shipped websites, IT support, and
+          full-stack academic projects.
         </p>
       </div>
 
@@ -183,6 +200,12 @@ export default function ResumeScrollStack({ items }) {
                     <li key={bullet}>{bullet}</li>
                   ))}
                 </ul>
+
+                {item.projectLink?.enabled && item.projectLink?.href ? (
+                  <div className="resume-stack-actions">
+                    <ProjectLinkButton projectLink={item.projectLink} />
+                  </div>
+                ) : null}
 
                 <div className="tag-row">
                   {item.tags.map((tag) => (
