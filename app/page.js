@@ -29,8 +29,7 @@ const timelineItems = [
     ],
     projectLink: {
       label: "View Project",
-      href: "",
-      enabled: false
+      href: ""
     },
     tags: ["React Native", "Expo", "Three.js", "Figma"]
   },
@@ -49,8 +48,7 @@ const timelineItems = [
     ],
     projectLink: {
       label: "View Project",
-      href: "",
-      enabled: false
+      href: ""
     },
     tags: ["Windows", "Microsoft 365", "Google Workspace", "IT Ops"]
   },
@@ -60,7 +58,7 @@ const timelineItems = [
     role: "Website Design / Development",
     period: "Sep-Nov 2025",
     location: "Client Work",
-    summary: "Built the company website for an IT and cybersecurity business.",
+    summary: "Built the company website for an IT and Cybersecurity business.",
     bullets: [
       "Built the site with Next.js App Router, TypeScript, and Tailwind CSS.",
       "Implemented a secure contact flow with serverless routes, validation, and Google reCAPTCHA.",
@@ -68,14 +66,13 @@ const timelineItems = [
     ],
     projectLink: {
       label: "View Project",
-      href: "https://www.gravitycomputers.com/",
-      enabled: true
+      href: "https://www.gravitycomputers.com/"
     },
     tags: ["Next.js", "TypeScript", "Tailwind", "reCAPTCHA"]
   },
   {
     kind: "Project",
-    title: "ADVSB",
+    title: "ADVSB - AdvancedVisualScheduleBuilder",
     role: "Full-Stack Web Application",
     period: "Sep-Dec 2024",
     location: "Academic Project",
@@ -88,8 +85,7 @@ const timelineItems = [
     ],
     projectLink: {
       label: "View Project",
-      href: "",
-      enabled: false
+      href: ""
     },
     tags: ["JavaScript", "PHP", "SQL", "Chart.js"]
   },
@@ -108,8 +104,7 @@ const timelineItems = [
     ],
     projectLink: {
       label: "View Project",
-      href: "",
-      enabled: false
+      href: ""
     },
     tags: ["React", "Node.js", "MongoDB", "Twilio"]
   }

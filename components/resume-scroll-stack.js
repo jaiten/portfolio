@@ -53,19 +53,18 @@ function getNextStackState(nodes) {
 }
 
 function ProjectLinkButton({ projectLink }) {
-  if (!projectLink?.enabled || !projectLink?.href) {
+  const href = projectLink?.href?.trim();
+
+  if (!href) {
     return null;
   }
 
   return (
-    <a
-      className="resume-project-link"
-      href={projectLink.href}
-      rel="noreferrer"
-      target="_blank"
-    >
-      {projectLink.label || "View Project"}
-    </a>
+    <div className="resume-stack-actions">
+      <a className="resume-project-link" href={href} rel="noreferrer" target="_blank">
+        {projectLink.label || "View Project"}
+      </a>
+    </div>
   );
 }
 
@@ -201,11 +200,7 @@ export default function ResumeScrollStack({ items }) {
                   ))}
                 </ul>
 
-                {item.projectLink?.enabled && item.projectLink?.href ? (
-                  <div className="resume-stack-actions">
-                    <ProjectLinkButton projectLink={item.projectLink} />
-                  </div>
-                ) : null}
+                <ProjectLinkButton projectLink={item.projectLink} />
 
                 <div className="tag-row">
                   {item.tags.map((tag) => (
