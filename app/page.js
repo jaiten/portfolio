@@ -112,25 +112,18 @@ const timelineItems = [
 
 const focusAreas = [
   {
-    title: "Networking and concurrency",
+    title: "Voice sentiment journaling app",
     description:
-      "Build a Linux-first HTTP server in C or C++ with epoll, keep-alive handling, routing, and a thread pool.",
+      "Building a journaling app where users can import voice notes or create new voice and text entries to talk through their day.",
     outcome:
-      "I want this to sharpen my systems programming and performance fundamentals."
+      "The goal is to surface sentiment over time so people can look back and understand how they were feeling at a glance."
   },
   {
-    title: "Storage and persistence",
+    title: "Catan 1v1 bot",
     description:
-      "Build a Redis-style key-value store with TCP command parsing, in-memory storage, TTL expiration, and append-only persistence.",
+      "Starting work on a head-to-head Catan bot focused on decision-making, game-state evaluation, and strong play in 1v1 matches.",
     outcome:
-      "I want this to push me further on protocol design, data structures, and persistence."
-  },
-  {
-    title: "Memory internals",
-    description:
-      "Write a custom allocator with free lists, coalescing, and fragmentation benchmarks.",
-    outcome:
-      "I want this to give me a better understanding of memory behavior at a lower level."
+      "I want this to push my AI and strategy work further while building something competitive and fun to iterate on."
   }
 ];
 
@@ -220,7 +213,7 @@ export default function HomePage() {
       <section className="section build-section" id="focus">
         <div className="section-heading">
           <div className="section-label">Current Focus</div>
-          <h2>What I&apos;m focusing on next.</h2>
+          <h2>What I&apos;m building now.</h2>
         </div>
         <div className="build-grid">
           {focusAreas.map((project, index) => (
