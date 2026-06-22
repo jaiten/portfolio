@@ -2,8 +2,7 @@ import ResumeScrollStack from "@/components/resume-scroll-stack";
 import SocialLinks from "@/components/social-links";
 
 const navLinks = [
-  { label: "Experience", href: "#experience" },
-  { label: "Focus", href: "#focus" },
+  { label: "Work", href: "#work" },
   { label: "Skills", href: "#skills" }
 ];
 
@@ -13,243 +12,246 @@ const socialLinks = [
   { label: "Email", href: "mailto:jaitenkangis@gmail.com" }
 ];
 
+const shippedItems = [
+  { icon: "🧱", name: "North Extension", sub: "Chrome + Firefox · Live" },
+  { icon: "🤖", name: "AI Browser Agent", sub: "Gemini 2.5 + Playwright" },
+  { icon: "💻", name: "gravitycomputers.com", sub: "Next.js · Live" },
+  { icon: "📝", name: "Word Count for Docs", sub: "Chrome Web Store · Live" }
+];
+
 const timelineItems = [
   {
-    kind: "Experience",
-    title: "Orca Medical",
-    role: "Co-Founder / Lead Frontend Developer",
-    period: "May-Dec 2025",
-    location: "Montreal, Canada",
+    kind: "Extension",
+    live: true,
+    title: "North",
+    role: "Focus & Distraction Blocker",
+    period: "2026",
     summary:
-      "Co-founded a health-tech startup and built the frontend for a mobile self-triage app focused on non-emergency care.",
+      "Built and shipped a distraction-blocking browser extension for Chrome and Firefox — focus sessions, schedules, site limits, keyword rules, and local-only storage.",
     bullets: [
-      "Built the app in React Native and Expo, including multi-step symptom intake and triage flows.",
-      "Integrated a 3D body model with Blender and Three.js to make symptom selection easier.",
-      "Handled product direction, Figma prototyping, and frontend architecture as the product took shape."
+      "Engineered a priority-based rule evaluator in a background service worker that handles SPA route changes, webNavigation events, content-script URL polling, and browser cache guards.",
+      "Added behavioral friction through a breathing timer and persistent journal unlock flow — time limits count only against the active focused tab and pause on browser idle.",
+      "Shipped to the Chrome Web Store and Firefox Add-ons with no backend, no accounts, all local."
     ],
-    projectLink: {
-      label: "View Project",
-      href: ""
-    },
-    tags: ["React Native", "Expo", "Three.js", "Figma"]
+    projectLink: { label: "Chrome Web Store →", href: "" },
+    tags: ["JavaScript", "Manifest V3", "Chrome Extension APIs", "Firefox"]
   },
   {
-    kind: "Experience",
+    kind: "AI System",
+    live: false,
+    title: "Agentic Browser Automation",
+    role: "AI + Playwright System",
+    period: "March 2026",
+    summary:
+      "An AI agent that reads live browser UI state through accessibility trees and executes multi-step workflows across dynamic interfaces.",
+    bullets: [
+      "Combined structured LLM planning (Gemini 2.5) with deterministic Playwright actions — model calls reserved for decisions only, not execution.",
+      "Handles form-filling, navigation, and dynamic interfaces; reduced token usage by ~33% by separating planning from action loops.",
+      "Reads real accessibility trees so it understands any interface without fragile selectors or screenshots."
+    ],
+    projectLink: { label: "", href: "" },
+    tags: ["TypeScript", "Playwright", "Gemini 2.5", "Accessibility Trees"]
+  },
+  {
+    kind: "Role",
+    live: true,
     title: "Gravity Computers",
-    role: "Desktop Support Technician / Team Lead",
-    period: "Summer 2020-2025",
-    location: "Vancouver, Canada",
+    role: "Software Engineer & IT Lead",
+    period: "2020 – Present",
     summary:
-      "Provided day-to-day IT support across business environments while taking on deployments, escalations, and team coordination.",
+      "Building and shipping web products for clients while running IT support across 250+ managed devices in Vancouver.",
     bullets: [
-      "Supported more than 250 devices across hardware, software, and network issues.",
-      "Set up operating systems, SaaS accounts, and workstation rollouts, cutting setup time by 15%.",
-      "Led teammates and improved support processes, reducing recurring issues by 20%."
+      "Designed and deployed production websites with Next.js, TypeScript, and Tailwind CSS — managing projects from client discovery through production.",
+      "Delivered sites for Gravity Computers, Win Ratio, Shoebox Investments, North, and Wilco Civil.",
+      "Reduced recurring IT issues by 20% and cut device setup times by 15% through proactive monitoring and process improvements."
     ],
-    projectLink: {
-      label: "View Project",
-      href: ""
-    },
-    tags: ["Windows", "Microsoft 365", "Google Workspace", "IT Ops"]
+    projectLink: { label: "gravitycomputers.com →", href: "https://www.gravitycomputers.com/" },
+    tags: ["Next.js", "TypeScript", "Tailwind CSS", "IT Operations"]
   },
   {
-    kind: "Project",
-    title: "Gravity Computers Website",
-    role: "Website Design / Development",
-    period: "Sep-Nov 2025",
-    location: "Client Work",
-    summary: "Built the company website for an IT and Cybersecurity business.",
-    bullets: [
-      "Built the site with Next.js App Router, TypeScript, and Tailwind CSS.",
-      "Implemented a secure contact flow with serverless routes, validation, and Google reCAPTCHA.",
-      "Focused on responsive layout, performance, and interaction details."
-    ],
-    projectLink: {
-      label: "View Project",
-      href: "https://www.gravitycomputers.com/"
-    },
-    tags: ["Next.js", "TypeScript", "Tailwind", "reCAPTCHA"]
-  },
-  {
-    kind: "Project",
-    title: "ADVSB - AdvancedVisualScheduleBuilder",
-    role: "Full-Stack Web Application",
-    period: "Sep-Dec 2024",
-    location: "Academic Project",
+    kind: "Web App",
+    live: false,
+    title: "ADVSB",
+    role: "Advanced Schedule Builder",
+    period: "Sept – Dec 2024",
     summary:
-      "Built a full-stack platform for course planning, schedule building, and degree progress tracking.",
+      "Full-stack course planning and social platform for McGill students — scheduling logic, authentication, friend-based features.",
     bullets: [
-      "Implemented authentication, scheduling, and student management features with JavaScript, PHP, and SQL.",
-      "Added charts and PDF exports with Chart.js and jsPDF.",
-      "Designed the interface around complex scheduling flows so it stayed usable."
+      "Built with JavaScript, PHP, and SQL; includes real-time validation, authentication, and student management.",
+      "Chart.js visualizations and jsPDF export for schedule sharing.",
+      "Designed the interface around complex scheduling constraints so it stayed usable under load."
     ],
-    projectLink: {
-      label: "View Project",
-      href: ""
-    },
-    tags: ["JavaScript", "PHP", "SQL", "Chart.js"]
-  },
-  {
-    kind: "Project",
-    title: "RxRemind",
-    role: "Prescription Reminder Web App",
-    period: "Jan-Feb 2023",
-    location: "Healthcare Web App",
-    summary:
-      "Built a web app for managing prescriptions and sending SMS medication reminders.",
-    bullets: [
-      "Built the React frontend for doctor and patient workflows.",
-      "Used Node.js and MongoDB for backend logic and data storage.",
-      "Integrated Twilio for automated reminder delivery and status tracking."
-    ],
-    projectLink: {
-      label: "View Project",
-      href: ""
-    },
-    tags: ["React", "Node.js", "MongoDB", "Twilio"]
+    projectLink: { label: "", href: "" },
+    tags: ["JavaScript", "PHP", "SQL", "Chart.js", "jsPDF"]
   }
 ];
 
-const focusAreas = [
+const miniProjects = [
   {
-    title: "Voice sentiment journaling app",
+    type: "Chrome Extension",
+    title: "Word Count for Google Docs",
     description:
-      "Building a journaling app where users can import voice notes or create new voice and text entries to talk through their day.",
-    outcome:
-      "The goal is to surface sentiment over time so people can look back and understand how they were feeling at a glance."
+      "Automatically enables live word count in Google Docs using DOM observation. No accounts, no backend, just works.",
+    link: { label: "Chrome Web Store →", href: "" }
   },
   {
-    title: "Catan 1v1 bot",
-    description:
-      "Starting work on a head-to-head Catan bot focused on decision-making, game-state evaluation, and strong play in 1v1 matches.",
-    outcome:
-      "I want this to push my AI and strategy work further while building something competitive and fun to iterate on."
+    type: "Website",
+    title: "Win Ratio",
+    description: "Production website for a sports analytics company. Built end-to-end with Next.js and Tailwind.",
+    link: { label: "", href: "" }
+  },
+  {
+    type: "Website",
+    title: "Shoebox Investments",
+    description: "Website for a real estate investment company.",
+    link: { label: "", href: "" }
+  },
+  {
+    type: "Website",
+    title: "Wilco Civil",
+    description: "Website for a civil engineering firm.",
+    link: { label: "", href: "" }
   }
 ];
 
 const skillGroups = [
   {
     title: "Languages",
-    items: ["Python", "Java", "C", "C++", "JavaScript", "TypeScript"]
+    items: ["Python", "Java", "C", "JavaScript", "TypeScript", "SQL"]
   },
   {
-    title: "Frontend + Product",
-    items: ["React", "Next.js", "React Native", "Expo", "Three.js", "Figma"]
+    title: "Frontend",
+    items: ["React", "Next.js", "React Native", "Tailwind CSS", "Framer Motion", "HTML/CSS"]
   },
   {
-    title: "Backend + Ops",
-    items: ["Node.js", "SQL", "PostgreSQL", "MongoDB", "AWS EC2", "Linux", "SSH"]
+    title: "AI / LLM",
+    items: ["LLM orchestration", "Agentic pipelines", "Prompt engineering", "Gemini", "GPT", "Whisper"]
+  },
+  {
+    title: "Backend & Cloud",
+    items: ["Node.js", "PHP", "PostgreSQL", "MongoDB", "AWS EC2", "Linux", "Playwright"]
   }
 ];
 
 export default function HomePage() {
   return (
     <main className="page-shell">
-      <div className="page-noise" />
+      <div className="page-noise" aria-hidden="true" />
 
+      {/* ── Nav ── */}
       <header className="topbar">
-        <a className="brand" href="#top">
-          Jaiten Kang
-        </a>
+        <a className="brand" href="#top">Jaiten Kang</a>
         <nav className="topnav" aria-label="Primary">
-          {navLinks.map((link) => (
-            <a href={link.href} key={link.href}>
-              {link.label}
-            </a>
+          {navLinks.map((l) => (
+            <a href={l.href} key={l.href}>{l.label}</a>
           ))}
         </nav>
-        <SocialLinks className="header-socials" links={socialLinks} />
+        <SocialLinks links={socialLinks} />
       </header>
 
+      {/* ── Hero ── */}
       <section className="hero" id="top">
         <div className="hero-backdrop" aria-hidden="true">
+          <div className="hero-backdrop-grid" />
           <div className="hero-backdrop-orb orb-one" />
           <div className="hero-backdrop-orb orb-two" />
-          <div className="hero-backdrop-grid" />
         </div>
+
         <div className="hero-layout">
           <div className="hero-copy">
-            <span className="eyebrow">Software Engineer / Portfolio</span>
+            <div className="hero-status">
+              <span className="status-dot" aria-hidden="true" />
+              Montreal · Available
+            </div>
+
             <h1>
-              I build clean software and care about{" "}
-              <em>how it works underneath</em>.
+              I build and ship
+              <span className="h1-accent">AI tools that work.</span>
             </h1>
-            <p className="hero-text">
-              I&apos;m a McGill computer science student with experience in
-              startup product work, frontend engineering, and technical
-              support. I like clean interfaces, straightforward code, and
-              getting deeper into backend, systems, and performance work.
+
+            <p className="hero-desc">
+              Browser extensions, agentic systems, and web products — end to end,
+              mostly alone, always in production. McGill CS &rsquo;26. I use AI
+              to move fast and build above my weight class.
             </p>
+
             <div className="hero-actions">
-              <a className="button button-primary" href="#experience">
-                View Experience
-              </a>
-              <a className="button button-secondary" href="#focus">
-                Current Focus
-              </a>
+              <a className="btn btn-primary" href="#work">See work →</a>
+              <a className="btn btn-ghost" href="mailto:jaitenkangis@gmail.com">Get in touch</a>
             </div>
           </div>
 
-          <aside className="hero-aside">
+          <aside>
             <div className="hero-aside-card">
-              <div className="section-label">At a Glance</div>
-              <ul className="intro-points">
-                <li>McGill University, B.Sc. Computer Science</li>
-                <li>Startup, client, and support experience</li>
-                <li>Interested in backend, systems, and performance</li>
-              </ul>
-              <p>
-                This site is a selection of the work I&apos;ve done so far. Most
-                of it has been frontend-heavy, but I&apos;m deliberately spending
-                more time on lower-level and systems-oriented projects.
-              </p>
+              <div className="shipped-label">◉ Recently shipped</div>
+              <div className="shipped-items">
+                {shippedItems.map((item) => (
+                  <div className="shipped-item" key={item.name}>
+                    <div className="shipped-icon" aria-hidden="true">{item.icon}</div>
+                    <div>
+                      <p className="shipped-name">{item.name}</p>
+                      <p className="shipped-sub">{item.sub}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </aside>
         </div>
       </section>
 
+      {/* ── Scroll stack ── */}
       <ResumeScrollStack items={timelineItems} />
 
-      <section className="section build-section" id="focus">
-        <div className="section-heading">
-          <div className="section-label">Current Focus</div>
-          <h2>What I&apos;m building now.</h2>
-        </div>
-        <div className="build-grid">
-          {focusAreas.map((project, index) => (
-            <article className="build-card" key={project.title}>
-              <span className="project-index">0{index + 1}</span>
-              <h3>{project.title}</h3>
-              <p>{project.description}</p>
-              <strong>{project.outcome}</strong>
+      {/* ── Mini projects ── */}
+      <section className="section mini-section">
+        <div className="section-label">Also built</div>
+        <div className="mini-grid">
+          {miniProjects.map((p) => (
+            <article className="mini-card" key={p.title}>
+              <div className="mini-card-type">{p.type}</div>
+              <h3>{p.title}</h3>
+              <p>{p.description}</p>
+              {p.link.href ? (
+                <a
+                  className="mini-card-link"
+                  href={p.link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {p.link.label}
+                </a>
+              ) : (
+                <span className="mini-card-type" style={{ opacity: 0.5 }}>Next.js · Tailwind CSS</span>
+              )}
             </article>
           ))}
         </div>
       </section>
 
-      <section className="section info-section" id="skills">
+      {/* ── Skills + Education ── */}
+      <section className="section" id="skills">
+        <div className="section-label">Skills &amp; Education</div>
         <div className="info-grid">
-          <article className="info-card education-card">
+          <article className="info-card">
             <div className="section-label">Education</div>
             <h2>McGill University</h2>
             <p>
-              B.Sc. in Computer Science, 2021-2026. Relevant coursework
-              includes algorithm design, concurrent programming, software
-              design, databases, machine learning, and data structures.
+              B.Sc. Computer Science, 2021–2026. Coursework in applied machine
+              learning, algorithm design, concurrent programming, software design,
+              databases, and data structures.
             </p>
           </article>
 
           <article className="info-card">
             <div className="section-label">Skills</div>
             <div className="skills-grid">
-              {skillGroups.map((group) => (
-                <div className="skill-group" key={group.title}>
-                  <h3>{group.title}</h3>
+              {skillGroups.map((g) => (
+                <div className="skill-group" key={g.title}>
+                  <h3>{g.title}</h3>
                   <div className="tag-row">
-                    {group.items.map((item) => (
-                      <span className="tag" key={item}>
-                        {item}
-                      </span>
+                    {g.items.map((s) => (
+                      <span className="tag" key={s}>{s}</span>
                     ))}
                   </div>
                 </div>
@@ -259,10 +261,11 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── Footer ── */}
       <footer className="site-footer">
         <div className="site-footer-inner">
-          <p>jaitenkangis@gmail.com</p>
-          <SocialLinks className="footer-socials" links={socialLinks} />
+          <span>jaitenkangis@gmail.com</span>
+          <SocialLinks links={socialLinks} />
         </div>
       </footer>
     </main>

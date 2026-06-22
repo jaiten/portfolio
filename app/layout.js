@@ -2,9 +2,9 @@ import CursorHalo from "@/components/cursor-halo";
 import "./globals.css";
 
 export const metadata = {
-  title: "Jaiten Kang | Portfolio",
+  title: "Jaiten Kang",
   description:
-    "Portfolio of Jaiten Kang, a McGill computer science student building software across frontend, product, and systems work."
+    "Jaiten Kang — builder shipping AI tools, browser extensions, and web products. McGill CS '26. Montreal."
 };
 
 export default function RootLayout({ children }) {
