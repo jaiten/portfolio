@@ -333,6 +333,22 @@ img {
   white-space: nowrap;
   margin-top: clamp(2.5rem, 7vh, 5rem);
   user-select: none;
+  /* fade words out at the edges so nothing is ever harshly clipped,
+     whether the track is scrolling or held still (reduced-motion) */
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 7%,
+    #000 93%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 7%,
+    #000 93%,
+    transparent
+  );
 }
 .marquee-track {
   display: flex;
@@ -354,11 +370,12 @@ img {
   gap: 2.5rem;
 }
 .marquee-item::after {
-  content: "✦";
-  font-family: var(--font-sans);
-  font-style: normal;
-  font-size: 0.8em;
-  color: var(--accent);
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
 }
 @keyframes scrollx {
   to {
@@ -505,16 +522,19 @@ img {
   background: var(--paper-2);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 30px 60px -30px rgba(22, 20, 13, 0.35),
     0 12px 24px -18px rgba(22, 20, 13, 0.4);
-  /* fast, clean exit */
-  transition: transform 0.34s var(--ease-ios), box-shadow 0.34s var(--ease-ios);
+  /* clean, unhurried exit */
+  transition: transform 0.55s var(--ease-ios), box-shadow 0.55s var(--ease-ios),
+    border-color 0.55s var(--ease-ios);
   will-change: transform;
 }
 .project-media:hover .browser {
-  transform: translateY(-8px);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 50px 90px -30px rgba(22, 20, 13, 0.45),
-    0 18px 34px -20px rgba(22, 20, 13, 0.45);
-  /* graceful, slow entry */
-  transition: transform 0.75s var(--ease-ios), box-shadow 0.75s var(--ease-ios);
+  transform: translateY(-9px);
+  border-color: var(--accent);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 50px 90px -30px rgba(22, 20, 13, 0.42),
+    0 18px 34px -20px rgba(22, 20, 13, 0.42);
+  /* heavy, slow pull upward — orange border resolves at the same rate (~0.7s) */
+  transition: transform 0.7s var(--ease-ios), box-shadow 0.7s var(--ease-ios),
+    border-color 0.7s var(--ease-ios);
 }
 .project-media:focus-visible {
   outline: 2px solid var(--accent);
@@ -556,12 +576,7 @@ img {
   object-fit: cover;
   object-position: top center;
   display: block;
-  transform: scale(1.001);
-  transition: transform 0.4s var(--ease-ios);
-}
-.project-media:hover .browser-shot {
-  transform: scale(1.05);
-  transition: transform 1.1s var(--ease-ios);
+  /* the screenshot itself stays untouched on hover — only the frame lifts */
 }
 .project-caption {
   margin-top: 0.85rem;
@@ -572,11 +587,34 @@ img {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink-3);
-  transition: color 0.3s var(--ease-ios);
+  transition: color 0.5s var(--ease-ios);
 }
-.project-media:hover .project-caption {
+.project-caption-visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+/* the visit label fills with orange from left to right, in step with the lift */
+.visit-label {
+  background: linear-gradient(90deg, var(--accent) 0 50%, var(--ink-3) 50% 100%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  transition: background-position 0.7s var(--ease-ios);
+}
+.project-caption-visit .arrow {
+  color: var(--ink-3);
+  transition: color 0.7s var(--ease-ios), transform 0.7s var(--ease-ios);
+}
+.project-media:hover .visit-label {
+  background-position: 0% 0;
+}
+.project-media:hover .project-caption-visit .arrow {
   color: var(--accent);
-  transition: color 0.6s var(--ease-ios);
+  transform: translate(2px, -2px);
 }
 
 @media (max-width: 880px) {
@@ -663,32 +701,33 @@ img {
 /* Extension cards: slow, smooth, intentional (iOS-style).
    AI-system cards keep the base hover above. */
 .scard.product {
-  /* fast, clean exit */
-  transition: transform 0.34s var(--ease-ios), border-color 0.34s var(--ease-ios),
-    box-shadow 0.34s var(--ease-ios);
+  /* calm, even exit */
+  transition: transform 0.5s var(--ease-ios), border-color 0.5s var(--ease-ios),
+    box-shadow 0.5s var(--ease-ios);
 }
 .scard.product:hover {
-  transform: translateY(-8px);
-  /* graceful, slow entry */
-  transition: transform 0.7s var(--ease-ios), border-color 0.7s var(--ease-ios),
-    box-shadow 0.7s var(--ease-ios);
+  /* heavier, slower pull upward with a deeper, softer shadow */
+  transform: translateY(-10px);
+  box-shadow: 0 44px 76px -40px rgba(22, 20, 13, 0.46);
+  transition: transform 0.85s var(--ease-ios), border-color 0.85s var(--ease-ios),
+    box-shadow 0.85s var(--ease-ios);
 }
 .scard.product .scard-glyph {
-  transition: transform 0.34s var(--ease-ios);
+  transition: transform 0.5s var(--ease-ios);
 }
 .scard.product:hover .scard-glyph {
-  transform: scale(1.06);
-  transition: transform 0.7s var(--ease-ios);
+  transform: scale(1.05) rotate(-2deg);
+  transition: transform 0.85s var(--ease-ios);
 }
 .scard.product .scard-link,
 .scard.product .scard-link .arrow {
-  transition: gap 0.3s var(--ease-ios), color 0.3s var(--ease-ios),
-    transform 0.3s var(--ease-ios);
+  transition: gap 0.4s var(--ease-ios), color 0.4s var(--ease-ios),
+    transform 0.4s var(--ease-ios);
 }
 .scard.product:hover .scard-link,
 .scard.product:hover .scard-link .arrow {
-  transition: gap 0.55s var(--ease-ios), color 0.55s var(--ease-ios),
-    transform 0.55s var(--ease-ios);
+  transition: gap 0.7s var(--ease-ios), color 0.7s var(--ease-ios),
+    transform 0.7s var(--ease-ios);
 }
 .scard-glyph.logo {
   background: none;
@@ -817,6 +856,13 @@ img {
   gap: 2rem;
   align-content: start;
 }
+@media (min-width: 881px) {
+  /* keep skills + credentials in view while the bio is read */
+  .about-side {
+    position: sticky;
+    top: 92px;
+  }
+}
 .about-block .eyebrow {
   display: block;
   margin-bottom: 1rem;
@@ -844,39 +890,26 @@ img {
   margin-top: 0.15rem;
 }
 
-.skills {
+/* skills, shown as a compact rail inside the About sidebar */
+.skill-side {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: clamp(1.2rem, 3vw, 2.5rem);
-  margin-top: clamp(2.5rem, 6vh, 4.5rem);
-  padding-top: clamp(2.5rem, 6vh, 4rem);
-  border-top: 1px solid var(--line);
+  gap: 1.05rem;
 }
-@media (max-width: 880px) {
-  .skills {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.skill-side-group {
+  display: grid;
+  gap: 0.3rem;
 }
-.skill-col h4 {
+.skill-side-label {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.66rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 1rem;
 }
-.skill-col ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 0.55rem;
-}
-.skill-col li {
-  font-size: 0.95rem;
+.skill-side-group p {
   color: var(--ink-2);
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--line-soft);
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 /* =========================================================================
@@ -942,13 +975,20 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  transition: background 0.3s var(--ease-ios), color 0.3s var(--ease-ios),
-    transform 0.3s var(--ease-ios);
+  transition: background 0.5s var(--ease-ios), color 0.5s var(--ease-ios),
+    border-color 0.5s var(--ease-ios), transform 0.5s var(--ease-ios);
+}
+.contact-link .arrow {
+  transition: transform 0.5s var(--ease-ios);
 }
 .contact-link:hover {
   background: var(--ink);
   color: var(--paper);
+  border-color: var(--ink);
   transform: translateY(-3px);
+}
+.contact-link:hover .arrow {
+  transform: translate(3px, -3px);
 }
 .footer {
   border-top: 1px solid var(--line);
@@ -964,6 +1004,46 @@ img {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-3);
+}
+
+/* =========================================================================
+   CUSTOM CURSOR (desktop, fine-pointer only — mounted by components/cursor.js)
+   ========================================================================= */
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  opacity: 0;
+  scale: 0.2;
+  transition: opacity 0.5s var(--ease-ios), scale 0.5s var(--ease-ios);
+  will-change: transform;
+}
+.cursor.is-active {
+  opacity: 1;
+  scale: 1;
+}
+.cursor-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+/* hand the pointer over to the custom cursor while hovering project media */
+.cursor-enabled .project-media,
+.cursor-enabled .project-media * {
+  cursor: none;
 }
 
 /* =========================================================================

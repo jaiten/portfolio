@@ -30,7 +30,7 @@ export default function Hero() {
             <span className="status-dot" aria-hidden="true" />
             <span className="eyebrow">Available now · Open to full-time SWE roles</span>
           </span>
-          <span className="eyebrow">Vancouver · Montréal · Remote</span>
+          <span className="eyebrow">Vancouver · Montréal · Remote · Open to relocating</span>
         </div>
 
         <h1 className="hero-title" aria-label="I build and ship websites, extensions & AI systems.">

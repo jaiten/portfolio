@@ -1,6 +1,7 @@
 import Nav from "@/components/nav";
 import Hero from "@/components/hero";
 import Reveal from "@/components/reveal";
+import Cursor from "@/components/cursor";
 
 /* ----------------------------- data ----------------------------- */
 
@@ -141,7 +142,7 @@ const skills = [
 const contactLinks = [
   { label: "GitHub", href: "https://github.com/jaiten" },
   { label: "LinkedIn", href: "https://linkedin.com/in/jaitenk" },
-  { label: "Résumé", href: "/JaitenKang_Resume.docx", download: true }
+  { label: "Résumé", href: "/JaitenKang_Resume.pdf", download: true }
 ];
 
 const Arrow = () => (
@@ -156,6 +157,7 @@ export default function Page() {
   return (
     <>
       <div className="grain" aria-hidden="true" />
+      <Cursor />
       <Nav />
       <main>
         <Hero />
@@ -234,6 +236,7 @@ export default function Page() {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`Visit ${p.title} live site`}
+                    data-cursor="Visit site"
                   >
                     <div className="browser">
                       <div className="browser-bar">
@@ -251,7 +254,10 @@ export default function Page() {
                     </div>
                     <div className="project-caption">
                       <span>{p.role}</span>
-                      <span>↗ Visit {p.label}</span>
+                      <span className="project-caption-visit">
+                        <span className="visit-label">Visit {p.label}</span>
+                        <Arrow />
+                      </span>
                     </div>
                   </a>
                 </Reveal>
@@ -412,6 +418,17 @@ export default function Page() {
 
               <Reveal className="about-side" delay={120}>
                 <div className="about-block">
+                  <span className="eyebrow">Skills</span>
+                  <div className="skill-side">
+                    {skills.map((g) => (
+                      <div className="skill-side-group" key={g.title}>
+                        <span className="skill-side-label">{g.title}</span>
+                        <p>{g.items.join(" · ")}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="about-block">
                   <span className="eyebrow">Experience</span>
                   <div className="cv-row">
                     <div>
@@ -440,19 +457,6 @@ export default function Page() {
                 </div>
               </Reveal>
             </div>
-
-            <Reveal className="skills">
-              {skills.map((g) => (
-                <div className="skill-col" key={g.title}>
-                  <h4>{g.title}</h4>
-                  <ul>
-                    {g.items.map((s) => (
-                      <li key={s}>{s}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </Reveal>
           </div>
         </section>
 
@@ -470,7 +474,7 @@ export default function Page() {
                 Let’s build
                 <br />
                 <a className="contact-mail" href="mailto:jaitenkangis@gmail.com">
-                  <span className="serif">something.</span>
+                  <span className="serif">anything.</span>
                 </a>
               </h2>
             </Reveal>
