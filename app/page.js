@@ -4,6 +4,7 @@ import Reveal from "@/components/reveal";
 import Cursor from "@/components/cursor";
 import CopyEmail from "@/components/copy-email";
 import ProjectShot from "@/components/project-shot";
+import SkillsGrid from "@/components/skills-grid";
 
 /* ----------------------------- data ----------------------------- */
 
@@ -421,17 +422,8 @@ export default function Page() {
               </Reveal>
             </div>
 
-            <Reveal className="skills">
-              {skills.map((g) => (
-                <div className="skill-col" key={g.title}>
-                  <h4>{g.title}</h4>
-                  <ul>
-                    {g.items.map((s) => (
-                      <li key={s}>{s}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+            <Reveal>
+              <SkillsGrid skills={skills} />
             </Reveal>
           </div>
         </section>
