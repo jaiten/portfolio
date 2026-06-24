@@ -2,6 +2,7 @@ import Nav from "@/components/nav";
 import Hero from "@/components/hero";
 import Reveal from "@/components/reveal";
 import Cursor from "@/components/cursor";
+import CopyEmail from "@/components/copy-email";
 
 /* ----------------------------- data ----------------------------- */
 
@@ -238,19 +239,21 @@ export default function Page() {
                     aria-label={`Visit ${p.title} live site`}
                     data-cursor="Visit site"
                   >
-                    <div className="browser">
-                      <div className="browser-bar">
-                        <span className="browser-dot" />
-                        <span className="browser-dot" />
-                        <span className="browser-dot" />
-                        <span className="browser-url">{p.label}</span>
+                    <div className="browser-frame">
+                      <div className="browser">
+                        <div className="browser-bar">
+                          <span className="browser-dot" />
+                          <span className="browser-dot" />
+                          <span className="browser-dot" />
+                          <span className="browser-url">{p.label}</span>
+                        </div>
+                        <img
+                          className="browser-shot"
+                          src={p.shot}
+                          alt={`${p.title} website`}
+                          loading="lazy"
+                        />
                       </div>
-                      <img
-                        className="browser-shot"
-                        src={p.shot}
-                        alt={`${p.title} website`}
-                        loading="lazy"
-                      />
                     </div>
                     <div className="project-caption">
                       <span>{p.role}</span>
@@ -404,10 +407,11 @@ export default function Page() {
                     agency-quality work in a fraction of the time.
                   </p>
                   <p>
-                    Before that, and still, I own IT infrastructure across 300+
-                    devices: a 20% drop in recurring issues from proactive
-                    monitoring, and 15% faster device setup from a standardized,
-                    repeatable workflow the whole team now uses.
+                    Before that, and still, I lead IT at Gravity Computers,
+                    managing infrastructure across 300+ devices: a 20% drop in
+                    recurring issues from proactive monitoring, and 15% faster
+                    device setup from a standardized, repeatable workflow the
+                    whole team now uses.
                   </p>
                   <p>
                     Recently graduated from McGill with a B.Sc. in Computer
@@ -417,17 +421,6 @@ export default function Page() {
               </Reveal>
 
               <Reveal className="about-side" delay={120}>
-                <div className="about-block">
-                  <span className="eyebrow">Skills</span>
-                  <div className="skill-side">
-                    {skills.map((g) => (
-                      <div className="skill-side-group" key={g.title}>
-                        <span className="skill-side-label">{g.title}</span>
-                        <p>{g.items.join(" · ")}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
                 <div className="about-block">
                   <span className="eyebrow">Experience</span>
                   <div className="cv-row">
@@ -457,6 +450,19 @@ export default function Page() {
                 </div>
               </Reveal>
             </div>
+
+            <Reveal className="skills">
+              {skills.map((g) => (
+                <div className="skill-col" key={g.title}>
+                  <h4>{g.title}</h4>
+                  <ul>
+                    {g.items.map((s) => (
+                      <li key={s}>{s}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </Reveal>
           </div>
         </section>
 
@@ -473,15 +479,11 @@ export default function Page() {
               <h2 className="contact-head">
                 Let’s build
                 <br />
-                <a className="contact-mail" href="mailto:jaitenkangis@gmail.com">
-                  <span className="serif">anything.</span>
-                </a>
+                <span className="serif accent">anything.</span>
               </h2>
             </Reveal>
             <Reveal className="contact-row" delay={100}>
-              <a className="contact-mail" href="mailto:jaitenkangis@gmail.com" style={{ fontSize: "1.25rem", fontWeight: 500 }}>
-                jaitenkangis@gmail.com
-              </a>
+              <CopyEmail email="jaitenkangis@gmail.com" />
               <div className="contact-links">
                 {contactLinks.map((l) => (
                   <a

@@ -26,6 +26,9 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   /* slow, smooth, intentional — iOS-style ease-out */
   --ease-ios: cubic-bezier(0.16, 1, 0.3, 1);
+  /* even, gentle ease-in-out (sine) — slow start, steady travel, soft settle.
+     deliberately NOT front-loaded so a long transition actually reads as slow */
+  --ease-heavy: cubic-bezier(0.37, 0, 0.63, 1);
 }
 
 * {
@@ -515,26 +518,60 @@ img {
   display: block;
   cursor: pointer;
 }
+/* frame wrapper carries the lift + the outer orange outline, so the outline
+   can sit OUTSIDE the screenshot (the .browser below clips its own content) */
+.browser-frame {
+  position: relative;
+  border-radius: 14px;
+  /* clean, unhurried exit */
+  transition: transform 0.8s var(--ease-ios);
+  will-change: transform;
+}
+/* orange outline that paints in from the top-left corner across to the
+   bottom-right, masked along the diagonal so it travels corner to corner.
+   inset is negative so the ring sits just outside the screenshot edge. */
+.browser-frame::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 16px;
+  border: 2px solid var(--accent);
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(135deg, #000 0 40%, transparent 60%);
+  mask-image: linear-gradient(135deg, #000 0 40%, transparent 60%);
+  -webkit-mask-size: 250% 250%;
+  mask-size: 250% 250%;
+  -webkit-mask-position: 100% 100%;
+  mask-position: 100% 100%;
+  transition: -webkit-mask-position 0.8s var(--ease-ios),
+    mask-position 0.8s var(--ease-ios);
+}
 .browser {
+  position: relative;
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--line);
   background: var(--paper-2);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 30px 60px -30px rgba(22, 20, 13, 0.35),
     0 12px 24px -18px rgba(22, 20, 13, 0.4);
-  /* clean, unhurried exit */
-  transition: transform 0.55s var(--ease-ios), box-shadow 0.55s var(--ease-ios),
-    border-color 0.55s var(--ease-ios);
-  will-change: transform;
+  transition: box-shadow 0.8s var(--ease-ios);
+}
+.project-media:hover .browser-frame {
+  /* heavy, very slow pull upward — feels weighted, settles over ~1.2s */
+  transform: translateY(-12px);
+  transition: transform 1.2s var(--ease-heavy);
+}
+.project-media:hover .browser-frame::after {
+  /* orange travels corner to corner at the same deliberate pace as the lift */
+  -webkit-mask-position: 0% 0%;
+  mask-position: 0% 0%;
+  transition: -webkit-mask-position 1.2s var(--ease-heavy),
+    mask-position 1.2s var(--ease-heavy);
 }
 .project-media:hover .browser {
-  transform: translateY(-9px);
-  border-color: var(--accent);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 50px 90px -30px rgba(22, 20, 13, 0.42),
-    0 18px 34px -20px rgba(22, 20, 13, 0.42);
-  /* heavy, slow pull upward — orange border resolves at the same rate (~0.7s) */
-  transition: transform 0.7s var(--ease-ios), box-shadow 0.7s var(--ease-ios),
-    border-color 0.7s var(--ease-ios);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 56px 100px -30px rgba(22, 20, 13, 0.44),
+    0 20px 38px -20px rgba(22, 20, 13, 0.44);
+  transition: box-shadow 1.2s var(--ease-heavy);
 }
 .project-media:focus-visible {
   outline: 2px solid var(--accent);
@@ -603,18 +640,21 @@ img {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  transition: background-position 0.7s var(--ease-ios);
+  transition: background-position 0.8s var(--ease-ios);
 }
 .project-caption-visit .arrow {
   color: var(--ink-3);
-  transition: color 0.7s var(--ease-ios), transform 0.7s var(--ease-ios);
+  transition: color 0.8s var(--ease-ios), transform 0.8s var(--ease-ios);
 }
 .project-media:hover .visit-label {
+  /* fills grey -> orange left to right, in lockstep with the border sweep */
   background-position: 0% 0;
+  transition: background-position 1.2s var(--ease-heavy);
 }
 .project-media:hover .project-caption-visit .arrow {
   color: var(--accent);
   transform: translate(2px, -2px);
+  transition: color 1.2s var(--ease-heavy), transform 1.2s var(--ease-heavy);
 }
 
 @media (max-width: 880px) {
@@ -726,6 +766,46 @@ img {
 }
 .scard.product:hover .scard-link,
 .scard.product:hover .scard-link .arrow {
+  transition: gap 0.7s var(--ease-ios), color 0.7s var(--ease-ios),
+    transform 0.7s var(--ease-ios);
+}
+
+/* AI-system cards: same premium, slow-settling feel as the extensions, with
+   their glow blooming and the geometric glyph rotating a touch further. */
+.scard:not(.product) {
+  /* calm, even exit */
+  transition: transform 0.5s var(--ease-ios), border-color 0.5s var(--ease-ios),
+    box-shadow 0.5s var(--ease-ios);
+}
+.scard:not(.product):hover {
+  transform: translateY(-10px);
+  border-color: rgba(22, 20, 13, 0.28);
+  box-shadow: 0 44px 76px -40px rgba(22, 20, 13, 0.46);
+  /* graceful, slow entry */
+  transition: transform 0.85s var(--ease-ios), border-color 0.85s var(--ease-ios),
+    box-shadow 0.85s var(--ease-ios);
+}
+.scard:not(.product)::before {
+  transition: opacity 0.85s var(--ease-ios);
+}
+.scard:not(.product):hover::before {
+  /* the glow swells as the card lifts */
+  opacity: 0.95;
+}
+.scard:not(.product) .scard-glyph {
+  transition: transform 0.5s var(--ease-ios);
+}
+.scard:not(.product):hover .scard-glyph {
+  transform: rotate(-5deg) scale(1.07);
+  transition: transform 0.85s var(--ease-ios);
+}
+.scard:not(.product) .scard-link,
+.scard:not(.product) .scard-link .arrow {
+  transition: gap 0.4s var(--ease-ios), color 0.4s var(--ease-ios),
+    transform 0.4s var(--ease-ios);
+}
+.scard:not(.product):hover .scard-link,
+.scard:not(.product):hover .scard-link .arrow {
   transition: gap 0.7s var(--ease-ios), color 0.7s var(--ease-ios),
     transform 0.7s var(--ease-ios);
 }
@@ -856,13 +936,6 @@ img {
   gap: 2rem;
   align-content: start;
 }
-@media (min-width: 881px) {
-  /* keep skills + credentials in view while the bio is read */
-  .about-side {
-    position: sticky;
-    top: 92px;
-  }
-}
 .about-block .eyebrow {
   display: block;
   margin-bottom: 1rem;
@@ -890,26 +963,39 @@ img {
   margin-top: 0.15rem;
 }
 
-/* skills, shown as a compact rail inside the About sidebar */
-.skill-side {
+.skills {
   display: grid;
-  gap: 1.05rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1.2rem, 3vw, 2.5rem);
+  margin-top: clamp(2.5rem, 6vh, 4.5rem);
+  padding-top: clamp(2.5rem, 6vh, 4rem);
+  border-top: 1px solid var(--line);
 }
-.skill-side-group {
-  display: grid;
-  gap: 0.3rem;
+@media (max-width: 880px) {
+  .skills {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
-.skill-side-label {
+.skill-col h4 {
   font-family: var(--font-mono);
-  font-size: 0.66rem;
+  font-size: 0.72rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent);
+  margin-bottom: 1rem;
 }
-.skill-side-group p {
+.skill-col ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+}
+.skill-col li {
+  font-size: 0.95rem;
   color: var(--ink-2);
-  font-size: 0.9rem;
-  line-height: 1.5;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--line-soft);
 }
 
 /* =========================================================================
@@ -965,6 +1051,82 @@ img {
   display: flex;
   gap: 0.8rem;
   flex-wrap: wrap;
+}
+.copy-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.copy-email-addr {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+.copy-btn {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--paper-2);
+  color: var(--ink-3);
+  cursor: pointer;
+  /* green reverts slowly on the way out (see .is-copied for the quick way in) */
+  transition: background 0.35s var(--ease-ios), color 0.9s var(--ease-ios),
+    border-color 0.9s var(--ease-ios), transform 0.35s var(--ease-ios);
+}
+.copy-btn:hover {
+  transform: translateY(-2px);
+}
+.copy-btn.is-copied {
+  color: #29a36a;
+  border-color: #29a36a;
+  transition: background 0.35s var(--ease-ios), color 0.2s var(--ease-ios),
+    border-color 0.2s var(--ease-ios), transform 0.35s var(--ease-ios);
+}
+/* stacked icons cross-fade: copy <-> check */
+.copy-ic {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  /* slow fade on the way out */
+  transition: opacity 1.1s var(--ease-ios);
+}
+.copy-ic-check {
+  opacity: 0;
+}
+.copy-btn.is-copied .copy-ic-copy {
+  opacity: 0;
+}
+.copy-btn.is-copied .copy-ic-check {
+  opacity: 1;
+}
+.copy-btn.is-copied .copy-ic {
+  /* quick fade on the way in */
+  transition: opacity 0.2s var(--ease-ios);
+}
+.copy-feedback {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #29a36a;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-4px);
+  /* slow, gentle fade-OUT */
+  transition: opacity 1.3s var(--ease-ios), transform 1.3s var(--ease-ios);
+  pointer-events: none;
+}
+.copy-feedback.show {
+  opacity: 1;
+  transform: none;
+  /* quick fade-IN */
+  transition: opacity 0.25s var(--ease-ios), transform 0.25s var(--ease-ios);
 }
 .contact-link {
   border: 1px solid var(--ink);
@@ -1060,16 +1222,20 @@ img {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Stop looping / auto-playing motion (marquee, pulsing dot) and scroll-driven
+     entrances. We deliberately do NOT zero out transition-duration: the hover
+     effects are short, subtle, and only play on direct user intent, so they
+     stay — otherwise the orange sweep and lifts snap instantly. */
   *,
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
   .reveal {
     opacity: 1;
     transform: none;
+    transition: none;
   }
 }
