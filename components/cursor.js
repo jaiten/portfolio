@@ -34,6 +34,13 @@ export default function Cursor() {
     const onOver = (e) => {
       const hit = e.target.closest?.("[data-cursor]");
       if (hit) {
+        // Use the event's own coordinates — target can be stale at entry
+        pos.x = e.clientX;
+        pos.y = e.clientY;
+        target.x = e.clientX;
+        target.y = e.clientY;
+        const el = ref.current;
+        if (el) el.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%)`;
         setLabel(hit.getAttribute("data-cursor") || "");
         setActive(true);
       }

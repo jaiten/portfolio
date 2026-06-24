@@ -556,19 +556,17 @@ img {
     0 12px 24px -18px rgba(22, 20, 13, 0.4);
   transition: box-shadow 0.8s var(--ease-ios);
 }
-.project-media:hover .browser-frame {
-  /* heavy, very slow pull upward — feels weighted, settles over ~1.2s */
+.project-media.is-scrolled .browser-frame {
   transform: translateY(-12px);
   transition: transform 1.2s var(--ease-heavy);
 }
-.project-media:hover .browser-frame::after {
-  /* orange travels corner to corner at the same deliberate pace as the lift */
+.project-media.is-scrolled .browser-frame::after {
   -webkit-mask-position: 0% 0%;
   mask-position: 0% 0%;
   transition: -webkit-mask-position 1.2s var(--ease-heavy),
     mask-position 1.2s var(--ease-heavy);
 }
-.project-media:hover .browser {
+.project-media.is-scrolled .browser {
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 56px 100px -30px rgba(22, 20, 13, 0.44),
     0 20px 38px -20px rgba(22, 20, 13, 0.44);
   transition: box-shadow 1.2s var(--ease-heavy);
@@ -646,12 +644,11 @@ img {
   color: var(--ink-3);
   transition: color 0.8s var(--ease-ios), transform 0.8s var(--ease-ios);
 }
-.project-media:hover .visit-label {
-  /* fills grey -> orange left to right, in lockstep with the border sweep */
+.project-media.is-scrolled .visit-label {
   background-position: 0% 0;
   transition: background-position 1.2s var(--ease-heavy);
 }
-.project-media:hover .project-caption-visit .arrow {
+.project-media.is-scrolled .project-caption-visit .arrow {
   color: var(--accent);
   transform: translate(2px, -2px);
   transition: color 1.2s var(--ease-heavy), transform 1.2s var(--ease-heavy);
@@ -796,7 +793,7 @@ img {
   transition: transform 0.5s var(--ease-ios);
 }
 .scard:not(.product):hover .scard-glyph {
-  transform: rotate(-5deg) scale(1.07);
+  transform: scale(1.07);
   transition: transform 0.85s var(--ease-ios);
 }
 .scard:not(.product) .scard-link,
@@ -947,6 +944,25 @@ img {
   justify-content: space-between;
   gap: 1rem;
   padding-block: 0.55rem;
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--line);
+  position: relative;
+  transition: border-color 0.3s var(--ease-ios);
+}
+.cv-row::before {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.4s var(--ease-ios);
+}
+.cv-row:hover::before {
+  transform: scaleY(1);
 }
 .cv-row strong {
   font-weight: 600;
@@ -954,7 +970,7 @@ img {
 .cv-row .cv-when {
   font-family: var(--font-mono);
   font-size: 0.78rem;
-  color: var(--ink-3);
+  color: var(--accent);
   white-space: nowrap;
 }
 .cv-row p {
@@ -996,6 +1012,31 @@ img {
   color: var(--ink-2);
   padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--line-soft);
+  position: relative;
+  padding-left: 0;
+  transition: color 0.28s var(--ease-ios), padding-left 0.28s var(--ease-ios);
+  cursor: default;
+}
+.skill-col li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(calc(-50% - 0.25rem)) scaleY(0);
+  width: 2px;
+  height: 11px;
+  background: var(--accent);
+  border-radius: 2px;
+  opacity: 0;
+  transition: transform 0.28s var(--ease-ios), opacity 0.28s var(--ease-ios);
+}
+.skill-col li:hover {
+  color: var(--accent);
+  padding-left: 0.7rem;
+}
+.skill-col li:hover::before {
+  transform: translateY(calc(-50% - 0.25rem)) scaleY(1);
+  opacity: 1;
 }
 
 /* =========================================================================
@@ -1201,11 +1242,6 @@ img {
   font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-}
-/* hand the pointer over to the custom cursor while hovering project media */
-.cursor-enabled .project-media,
-.cursor-enabled .project-media * {
-  cursor: none;
 }
 
 /* =========================================================================

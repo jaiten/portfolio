@@ -3,6 +3,7 @@ import Hero from "@/components/hero";
 import Reveal from "@/components/reveal";
 import Cursor from "@/components/cursor";
 import CopyEmail from "@/components/copy-email";
+import ProjectShot from "@/components/project-shot";
 
 /* ----------------------------- data ----------------------------- */
 
@@ -39,7 +40,7 @@ const websites = [
     desc:
       "A refined, type-forward site for a team of writers, editors, and designers who help companies win work. Built to feel as considered as the service it sells.",
     tags: ["Next.js", "TypeScript", "Editorial", "Motion"],
-    url: "https://www.winratio.ca/",
+    url: "https://winratio.vercel.app/",
     label: "winratio.ca",
     shot: "/shots/winratio.png",
     role: "Design → Build"
@@ -61,7 +62,7 @@ const websites = [
     desc:
       "A premium site for a private equity and asset-management firm. Dark, grounded, and built to signal trust to high-net-worth partners across the US and Canada.",
     tags: ["Next.js", "TypeScript", "Tailwind"],
-    url: "https://shoeboxinvestments.com/",
+    url: "https://shoebox-six.vercel.app/",
     label: "shoeboxinvestments.com",
     shot: "/shots/shoebox.png",
     role: "Design → Build → Deploy"
@@ -72,7 +73,7 @@ const websites = [
     desc:
       "A bold, image-led site for a heavy-civil construction firm on Vancouver Island. Earthworks, parks, and waterfront work, framed to win bigger contracts.",
     tags: ["Next.js", "TypeScript", "Tailwind"],
-    url: "https://wilcocivil.ca/",
+    url: "https://wilco-rho.vercel.app/",
     label: "wilcocivil.ca",
     shot: "/shots/wilco.png",
     role: "Design → Build → Deploy"
@@ -231,38 +232,7 @@ export default function Page() {
                     </a>
                   </div>
 
-                  <a
-                    className="project-media"
-                    href={p.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={`Visit ${p.title} live site`}
-                    data-cursor="Visit site"
-                  >
-                    <div className="browser-frame">
-                      <div className="browser">
-                        <div className="browser-bar">
-                          <span className="browser-dot" />
-                          <span className="browser-dot" />
-                          <span className="browser-dot" />
-                          <span className="browser-url">{p.label}</span>
-                        </div>
-                        <img
-                          className="browser-shot"
-                          src={p.shot}
-                          alt={`${p.title} website`}
-                          loading="lazy"
-                        />
-                      </div>
-                    </div>
-                    <div className="project-caption">
-                      <span>{p.role}</span>
-                      <span className="project-caption-visit">
-                        <span className="visit-label">Visit {p.label}</span>
-                        <Arrow />
-                      </span>
-                    </div>
-                  </a>
+                  <ProjectShot p={p} />
                 </Reveal>
               ))}
             </div>
