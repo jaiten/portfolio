@@ -24,7 +24,7 @@ const websites = [
     title: "Gravity Computers",
     kicker: "Managed IT, made effortless",
     desc:
-      "Rebuilt the company’s marketing site end-to-end — brand, copy, design, build, and deploy. Faster load times and a clearer conversion flow lifted client inquiries.",
+      "Rebuilt the company’s marketing site end-to-end, owning brand, copy, design, build, and deploy. Faster load times and a clearer conversion flow lifted client inquiries.",
     tags: ["Next.js", "TypeScript", "Tailwind", "Brand"],
     url: "https://www.gravitycomputers.com/",
     label: "gravitycomputers.com",
@@ -35,10 +35,10 @@ const websites = [
     title: "Win / Ratio",
     kicker: "An editorial studio identity",
     desc:
-      "A refined, type-forward site for a team of writers, editors, and designers who help companies win work — built to feel as considered as the service it sells.",
+      "A refined, type-forward site for a team of writers, editors, and designers who help companies win work. Built to feel as considered as the service it sells.",
     tags: ["Next.js", "TypeScript", "Editorial", "Motion"],
-    url: "https://winratio.vercel.app/",
-    label: "winratio.vercel.app",
+    url: "https://www.winratio.ca/",
+    label: "winratio.ca",
     shot: "/shots/winratio.png",
     role: "Design → Build"
   },
@@ -46,7 +46,7 @@ const websites = [
     title: "North",
     kicker: "A product site with a point of view",
     desc:
-      "The marketing home for my focus extension — sharp positioning, soft gradients, and an interactive product demo that sells the idea before the install.",
+      "The marketing home for my focus extension. Sharp positioning, soft gradients, and an interactive product demo that sells the idea before the install.",
     tags: ["Next.js", "Product", "Motion", "Branding"],
     url: "https://northfocus.app/",
     label: "northfocus.app",
@@ -57,10 +57,10 @@ const websites = [
     title: "Shoebox Investments",
     kicker: "Private capital, presented with weight",
     desc:
-      "A premium site for a private equity and asset-management firm — dark, grounded, and built to signal trust to high-net-worth partners across the US and Canada.",
+      "A premium site for a private equity and asset-management firm. Dark, grounded, and built to signal trust to high-net-worth partners across the US and Canada.",
     tags: ["Next.js", "TypeScript", "Tailwind"],
-    url: "https://shoebox-six.vercel.app/",
-    label: "shoebox-six.vercel.app",
+    url: "https://shoeboxinvestments.com/",
+    label: "shoeboxinvestments.com",
     shot: "/shots/shoebox.png",
     role: "Design → Build → Deploy"
   },
@@ -68,10 +68,10 @@ const websites = [
     title: "Wilco Civil",
     kicker: "Heavy civil, built to last",
     desc:
-      "A bold, image-led site for a heavy-civil construction firm on Vancouver Island — earthworks, parks, and waterfront work framed to win bigger contracts.",
+      "A bold, image-led site for a heavy-civil construction firm on Vancouver Island. Earthworks, parks, and waterfront work, framed to win bigger contracts.",
     tags: ["Next.js", "TypeScript", "Tailwind"],
-    url: "https://wilco-rho.vercel.app/",
-    label: "wilco-rho.vercel.app",
+    url: "https://wilcocivil.ca/",
+    label: "wilcocivil.ca",
     shot: "/shots/wilco.png",
     role: "Design → Build → Deploy"
   }
@@ -79,28 +79,26 @@ const websites = [
 
 const products = [
   {
-    glyph: "↑",
-    glow: "rgba(59, 130, 246, 0.22)",
+    logo: "/logos/north.svg",
+    glow: "rgba(99, 102, 241, 0.22)",
     type: "Chrome + Firefox · Live",
-    live: true,
-    title: "North — Focus & Distraction Blocker",
+    title: "North: Focus & Distraction Blocker",
     desc:
-      "A distraction-blocking extension that reduces impulsive browsing through focus sessions, schedules, and behavioral friction. A priority-based rule engine enforces lockdowns, content filters, time limits, and temporary unlocks — even across SPAs like YouTube and Instagram that change without reloading. All data stays local; no backend, no accounts.",
+      "A distraction-blocking extension that reduces impulsive browsing through focus sessions, schedules, and behavioral friction. A priority-based rule engine enforces lockdowns, content filters, time limits, and temporary unlocks, even across SPAs like YouTube and Instagram that change without reloading. All data stays local, with no backend and no accounts.",
     tags: ["JavaScript", "Manifest V3", "Rule Engine"],
     url: "https://chromewebstore.google.com/detail/bbfpkfifjmcebiobbmfhdgpnclegaedo",
-    label: "Chrome Web Store"
+    label: "See on Chrome Web Store"
   },
   {
-    glyph: "¶",
-    glow: "rgba(34, 197, 94, 0.2)",
+    logo: "/logos/wordcount.svg",
+    glow: "rgba(66, 133, 244, 0.2)",
     type: "Chrome Web Store · Live",
-    live: true,
     title: "Word Count for Google Docs",
     desc:
-      "A zero-config extension that injects a live word counter into Google Docs by watching the editor DOM with a MutationObserver. No accounts, no backend — it just works, every time the page loads.",
+      "A zero-config extension that injects a live word counter into Google Docs by watching the editor DOM with a MutationObserver. No accounts, no backend. It just works, every time the page loads.",
     tags: ["TypeScript", "Chrome APIs", "MutationObserver"],
     url: "https://chromewebstore.google.com/detail/okjgpepodicdbadoeolkipidpeocneoi",
-    label: "Chrome Web Store"
+    label: "See on Chrome Web Store"
   }
 ];
 
@@ -113,10 +111,10 @@ const systems = [
     status: "2026",
     title: "Agentic Browser Automation",
     desc:
-      "An AI agent that reads live browser state through accessibility trees and executes multi-step workflows autonomously. The agent loop reserves LLM calls for decisions and uses deterministic actions for execution — cutting token usage ~33% while staying robust to interfaces that change without fragile selectors.",
+      "An autonomous browser agent that completes real-world workflows across dynamic websites, including navigation, form completion, and multi-step task execution. A hybrid architecture reserves LLM calls for decision-making while deterministic systems handle execution, cutting token usage by ~33%.",
     tags: ["TypeScript", "Playwright", "Gemini 2.5"],
-    url: "",
-    label: ""
+    url: "https://github.com/jaiten/magical2",
+    label: "View on GitHub"
   },
   {
     glyph: "◉",
@@ -126,10 +124,10 @@ const systems = [
     status: "In progress",
     title: "Voice Note Analyzer",
     desc:
-      "A full-stack app that turns voice and text into structured insight — actions, mood, and themes. Audio runs through Whisper, semantic analysis through Gemini, with persistent storage for longitudinal tracking over time.",
+      "A full-stack app that turns voice and text into structured insight: actions, mood, and themes. Audio runs through Whisper, semantic analysis through Gemini, with persistent storage for longitudinal tracking over time.",
     tags: ["React", "Node.js", "Whisper", "Gemini"],
-    url: "",
-    label: ""
+    url: "https://github.com/jaiten/voicemood",
+    label: "View on GitHub"
   }
 ];
 
@@ -187,14 +185,14 @@ export default function Page() {
           <div className="wrap">
             <Reveal className="section-head">
               <div>
-                <span className="section-index">01 — Selected Work</span>
+                <span className="section-index">01 · Selected Work</span>
                 <h2>
                   Production <span className="serif">websites</span>
                 </h2>
               </div>
               <p className="section-note">
                 Client sites taken from brand and copy through design, build, and
-                deploy. Every one is live.
+                deploy. Each one shipped end-to-end.
               </p>
             </Reveal>
 
@@ -230,7 +228,13 @@ export default function Page() {
                     </a>
                   </div>
 
-                  <div className="project-media">
+                  <a
+                    className="project-media"
+                    href={p.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`Visit ${p.title} live site`}
+                  >
                     <div className="browser">
                       <div className="browser-bar">
                         <span className="browser-dot" />
@@ -247,9 +251,9 @@ export default function Page() {
                     </div>
                     <div className="project-caption">
                       <span>{p.role}</span>
-                      <span>↗ {p.label}</span>
+                      <span>↗ Visit {p.label}</span>
                     </div>
-                  </div>
+                  </a>
                 </Reveal>
               ))}
             </div>
@@ -261,23 +265,32 @@ export default function Page() {
           <div className="wrap">
             <Reveal className="section-head">
               <div>
-                <span className="section-index">02 — Shipped Products</span>
+                <span className="section-index">02 · Shipped Products</span>
                 <h2>
                   Browser <span className="serif">extensions</span>
                 </h2>
               </div>
               <p className="section-note">
-                Self-published tools on the Chrome Web Store and Firefox Add-ons —
-                architecture, UX, branding, and publishing.
+                Self-published tools on the Chrome Web Store and Firefox Add-ons.
+                Architecture, UX, branding, and publishing.
               </p>
             </Reveal>
 
             <div className="card-grid">
               {products.map((c) => (
-                <Reveal className="scard" key={c.title} style={{ "--glow": c.glow }}>
+                <Reveal
+                  as="a"
+                  className="scard product"
+                  key={c.title}
+                  href={c.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${c.title}, see on Chrome Web Store`}
+                  style={{ "--glow": c.glow }}
+                >
                   <div className="scard-top">
-                    <span className="scard-glyph" aria-hidden="true">
-                      {c.glyph}
+                    <span className="scard-glyph logo" aria-hidden="true">
+                      <img src={c.logo} alt="" width="54" height="54" />
                     </span>
                     <span className="scard-badge">
                       <span className="status-dot" /> Live
@@ -294,16 +307,9 @@ export default function Page() {
                         </span>
                       ))}
                     </div>
-                    {c.url ? (
-                      <a
-                        className="scard-link"
-                        href={c.url}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {c.label} <Arrow />
-                      </a>
-                    ) : null}
+                    <span className="scard-link">
+                      {c.label} <Arrow />
+                    </span>
                   </div>
                 </Reveal>
               ))}
@@ -316,7 +322,7 @@ export default function Page() {
           <div className="wrap">
             <Reveal className="section-head">
               <div>
-                <span className="section-index">03 — Engineering</span>
+                <span className="section-index">03 · Engineering</span>
                 <h2>
                   AI <span className="serif">systems</span>
                 </h2>
@@ -329,7 +335,16 @@ export default function Page() {
 
             <div className="card-grid">
               {systems.map((c) => (
-                <Reveal className="scard" key={c.title} style={{ "--glow": c.glow }}>
+                <Reveal
+                  as="a"
+                  className="scard"
+                  key={c.title}
+                  href={c.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${c.title}, view on GitHub`}
+                  style={{ "--glow": c.glow }}
+                >
                   <div className="scard-top">
                     <span className="scard-glyph" aria-hidden="true">
                       {c.glyph}
@@ -347,6 +362,9 @@ export default function Page() {
                         </span>
                       ))}
                     </div>
+                    <span className="scard-link">
+                      {c.label} <Arrow />
+                    </span>
                   </div>
                 </Reveal>
               ))}
@@ -359,7 +377,7 @@ export default function Page() {
           <div className="wrap">
             <Reveal className="section-head">
               <div>
-                <span className="section-index">04 — Profile</span>
+                <span className="section-index">04 · Profile</span>
                 <h2>
                   About <span className="serif">me</span>
                 </h2>
@@ -376,8 +394,8 @@ export default function Page() {
                   <p>
                     At Gravity Computers I design, build, and ship production
                     websites for clients end-to-end, and pioneered LLM tooling
-                    across the dev workflow — letting a one-person pipeline produce
-                    agency-quality work at a fraction of the time.
+                    across the dev workflow, letting a one-person pipeline produce
+                    agency-quality work in a fraction of the time.
                   </p>
                   <p>
                     Before that, and still, I own IT infrastructure across 300+
@@ -386,8 +404,8 @@ export default function Page() {
                     repeatable workflow the whole team now uses.
                   </p>
                   <p>
-                    Fluent in English and French, finishing a B.Sc. in Computer
-                    Science at McGill. Happy to work anywhere.
+                    Recently graduated from McGill with a B.Sc. in Computer
+                    Science. Open to full-time software roles anywhere.
                   </p>
                 </div>
               </Reveal>
@@ -400,14 +418,14 @@ export default function Page() {
                       <strong>Software Engineer</strong>
                       <p>Gravity Computers · Vancouver</p>
                     </div>
-                    <span className="cv-when">2025 — Now</span>
+                    <span className="cv-when">2025 – Now</span>
                   </div>
                   <div className="cv-row">
                     <div>
                       <strong>IT Lead</strong>
                       <p>Gravity Computers · Vancouver</p>
                     </div>
-                    <span className="cv-when">2022 — Now</span>
+                    <span className="cv-when">2022 – Now</span>
                   </div>
                 </div>
                 <div className="about-block">
@@ -417,7 +435,7 @@ export default function Page() {
                       <strong>B.Sc. Computer Science</strong>
                       <p>McGill University · Montréal</p>
                     </div>
-                    <span className="cv-when">2021 — 2026</span>
+                    <span className="cv-when">2021 – 2026</span>
                   </div>
                 </div>
               </Reveal>
@@ -442,7 +460,12 @@ export default function Page() {
         <section className="contact" id="contact">
           <div className="wrap">
             <Reveal>
-              <span className="eyebrow">05 — Contact</span>
+              <span className="eyebrow">05 · Contact</span>
+              <p className="contact-note">
+                Recently graduated from McGill and actively looking for{" "}
+                <span className="serif">full-time software roles</span>. Happy to
+                work anywhere. Let’s talk.
+              </p>
               <h2 className="contact-head">
                 Let’s build
                 <br />

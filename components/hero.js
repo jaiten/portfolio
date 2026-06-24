@@ -28,7 +28,7 @@ export default function Hero() {
         <div className="hero-top">
           <span className="hero-status">
             <span className="status-dot" aria-hidden="true" />
-            <span className="eyebrow">Available for work — 2026</span>
+            <span className="eyebrow">Available now · Open to full-time SWE roles</span>
           </span>
           <span className="eyebrow">Vancouver · Montréal · Remote</span>
         </div>
@@ -65,7 +65,7 @@ export default function Hero() {
             transition={{ delay: 0.7, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             Software engineer who turns ambiguous problems into{" "}
-            <span className="serif">deployed products</span> — owning brand,
+            <span className="serif">deployed products</span>, owning brand,
             design, build, and ship. I use AI to move fast and build above my
             weight class.
           </motion.p>
@@ -85,8 +85,12 @@ export default function Hero() {
               <dd>Web · Browser Extensions · AI Agents</dd>
             </div>
             <div className="hero-fact">
-              <dt>Studying</dt>
+              <dt>Education</dt>
               <dd>B.Sc. Computer Science, McGill ’26</dd>
+            </div>
+            <div className="hero-fact">
+              <dt>Seeking</dt>
+              <dd>Full-time Software Engineer roles</dd>
             </div>
           </motion.dl>
         </div>

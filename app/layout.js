@@ -25,13 +25,13 @@ const mono = JetBrains_Mono({
 
 export const metadata = {
   metadataBase: new URL("https://jaitenkang.com"),
-  title: "Jaiten Kang — Software Engineer & Builder",
+  title: "Jaiten Kang · Software Engineer & Builder",
   description:
-    "Jaiten Kang turns ambiguous problems into deployed products — production websites, browser extensions, and AI systems. McGill CS '26.",
+    "Jaiten Kang turns ambiguous problems into deployed products: production websites, browser extensions, and AI systems. McGill CS '26.",
   openGraph: {
-    title: "Jaiten Kang — Software Engineer & Builder",
+    title: "Jaiten Kang · Software Engineer & Builder",
     description:
-      "Production websites, browser extensions, and AI systems — built and shipped end to end.",
+      "Production websites, browser extensions, and AI systems, built and shipped end to end.",
     type: "website"
   }
 };
