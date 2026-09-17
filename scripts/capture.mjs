@@ -3,6 +3,7 @@ import { mkdir } from "node:fs/promises";
 
 const OUT = new URL("../public/shots/", import.meta.url).pathname.replace(/^\//, "");
 
+const only = process.argv.slice(2);
 const targets = [
   { name: "gravity", url: "https://www.gravitycomputers.com/" },
   { name: "winratio", url: "https://winratio.vercel.app/" },
@@ -22,7 +23,7 @@ const run = async () => {
     deviceScaleFactor: 2
   });
 
-  for (const t of targets) {
+  for (const t of targets.filter((x) => !only.length || only.includes(x.name))) {
     const page = await ctx.newPage();
     try {
       await page.goto(t.url, { waitUntil: "networkidle", timeout: 45000 });
@@ -35,6 +36,7 @@ const run = async () => {
           if (r.height < 300 && r.bottom > window.innerHeight - 320) el.remove();
         }));
       });
+      await page.addStyleTag({ content: "::-webkit-scrollbar{display:none!important}html,body{scrollbar-width:none!important}" });
       await page.waitForTimeout(400);
       await page.screenshot({ path: `${OUT}${t.name}.png`, clip: { x: 0, y: 0, width: W, height: H } });
       console.log("OK   ", t.name);

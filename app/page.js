@@ -50,7 +50,7 @@ const websites = [
     title: "North",
     kicker: "A product site with a point of view",
     desc:
-      "The marketing home for my focus extension. Sharp positioning, soft gradients, and an interactive product demo that sells the idea before the install.",
+      "The marketing home for my focus extension. A calm, dark-green editorial identity, a clear point of view, and a live preview of the pause screen that sells the idea before the install.",
     tags: ["Next.js", "Product", "Motion", "Branding"],
     url: "https://northfocus.app/",
     label: "northfocus.app",
@@ -59,9 +59,9 @@ const websites = [
   },
   {
     title: "Shoebox Investments",
-    kicker: "Private capital, presented with weight",
+    kicker: "Patient capital, presented with weight",
     desc:
-      "A premium site for a private equity and asset-management firm. Dark, grounded, and built to signal trust to high-net-worth partners across the US and Canada.",
+      "A premium site for a Vancouver investment firm that acquires MSPs, backs real estate development, and offers private lending. Forest green and gold, serif-led, and built to earn the trust of sellers and partners.",
     tags: ["Next.js", "TypeScript", "Tailwind"],
     url: "https://shoebox-six.vercel.app/",
     label: "shoeboxinvestments.com",
@@ -84,7 +84,7 @@ const websites = [
 const products = [
   {
     logo: "/logos/north.svg",
-    glow: "rgba(99, 102, 241, 0.22)",
+    glow: "rgba(49, 87, 68, 0.24)",
     type: "Chrome + Firefox · Live",
     title: "North: Focus & Distraction Blocker",
     desc:
