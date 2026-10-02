@@ -117,8 +117,8 @@ const systems = [
     desc:
       "An autonomous browser agent that completes real-world workflows across dynamic websites, including navigation, form completion, and multi-step task execution. A hybrid architecture reserves LLM calls for decision-making while deterministic systems handle execution, cutting token usage by ~33%.",
     tags: ["TypeScript", "Playwright", "Gemini 2.5"],
-    url: "https://github.com/jaiten/magical2",
-    label: "View on GitHub"
+    url: null,
+    label: "Private build · details on request"
   },
   {
     glyph: "◉",
@@ -148,6 +148,13 @@ const contactLinks = [
   { label: "Résumé", href: "/JaitenKang_Resume.pdf", download: true }
 ];
 
+const proof = [
+  { value: "5", label: "production sites shipped" },
+  { value: "2", label: "browser extensions live" },
+  { value: "300+", label: "devices managed" },
+  { value: "20%", label: "fewer recurring IT issues" }
+];
+
 const Arrow = () => (
   <svg className="arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
     <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -164,6 +171,17 @@ export default function Page() {
       <Nav />
       <main>
         <Hero />
+
+        <div className="wrap">
+          <Reveal className="proof-strip" aria-label="Selected outcomes">
+            {proof.map((item) => (
+              <div className="proof-item" key={item.label}>
+                <strong>{item.value}</strong>
+                <span>{item.label}</span>
+              </div>
+            ))}
+          </Reveal>
+        </div>
 
         {/* marquee */}
         <div className="wrap">
@@ -190,14 +208,14 @@ export default function Page() {
           <div className="wrap">
             <Reveal className="section-head">
               <div>
-                <span className="section-index">01 · Selected Work</span>
+                <span className="section-index">01 · Client Deployments</span>
                 <h2>
-                  Production <span className="serif">websites</span>
+                  From brief to <span className="serif">production</span>
                 </h2>
               </div>
               <p className="section-note">
-                Client sites taken from brand and copy through design, build, and
-                deploy. Each one shipped end-to-end.
+                Five client sites taken from an ambiguous brief through brand,
+                copy, design, build, and deployment.
               </p>
             </Reveal>
 
@@ -245,14 +263,14 @@ export default function Page() {
           <div className="wrap">
             <Reveal className="section-head">
               <div>
-                <span className="section-index">02 · Shipped Products</span>
+                <span className="section-index">02 · Product Engineering</span>
                 <h2>
                   Browser <span className="serif">extensions</span>
                 </h2>
               </div>
               <p className="section-note">
-                Self-published tools on the Chrome Web Store and Firefox Add-ons.
-                Architecture, UX, branding, and publishing.
+                Self-published tools with real users and real constraints—from
+                rule-engine architecture to UX, branding, and distribution.
               </p>
             </Reveal>
 
@@ -314,16 +332,23 @@ export default function Page() {
             </Reveal>
 
             <div className="card-grid">
-              {systems.map((c) => (
+              {systems.map((c) => {
+                const linkProps = c.url
+                  ? {
+                      as: "a",
+                      href: c.url,
+                      target: "_blank",
+                      rel: "noreferrer",
+                      "aria-label": `${c.title}, view on GitHub`
+                    }
+                  : { as: "article" };
+
+                return (
                 <Reveal
-                  as="a"
-                  className="scard"
+                  className={`scard ${c.url ? "" : "is-static"}`.trim()}
                   key={c.title}
-                  href={c.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`${c.title}, view on GitHub`}
                   style={{ "--glow": c.glow }}
+                  {...linkProps}
                 >
                   <div className="scard-top">
                     <span className="scard-glyph" aria-hidden="true">
@@ -343,11 +368,12 @@ export default function Page() {
                       ))}
                     </div>
                     <span className="scard-link">
-                      {c.label} <Arrow />
+                      {c.label} {c.url ? <Arrow /> : null}
                     </span>
                   </div>
                 </Reveal>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
@@ -367,15 +393,16 @@ export default function Page() {
             <div className="about-grid">
               <Reveal>
                 <p className="about-lead">
-                  Software engineer, IT lead, and builder who turns ambiguous
-                  problems into <span className="serif">deployed products</span>.
+                  I like the part before the requirements are obvious—and the
+                  part after the demo has to <span className="serif">survive reality</span>.
                 </p>
                 <div className="about-body">
                   <p>
-                    At Gravity Computers I design, build, and ship production
-                    websites for clients end-to-end, and pioneered LLM tooling
-                    across the dev workflow, letting a one-person pipeline produce
-                    agency-quality work in a fraction of the time.
+                    At Gravity Computers I sit close to customers, translate
+                    loosely defined needs into software, and own the path from
+                    first conversation to production. I also introduced LLM
+                    tooling across the development workflow so a one-person
+                    pipeline could move with the range of a larger team.
                   </p>
                   <p>
                     Before that, and still, I lead IT at Gravity Computers,
@@ -385,8 +412,9 @@ export default function Page() {
                     whole team now uses.
                   </p>
                   <p>
-                    Recently graduated from McGill with a B.Sc. in Computer
-                    Science. Open to full-time software roles anywhere.
+                    I graduated from McGill with a B.Sc. in Computer Science.
+                    I’m looking for a team where engineering includes discovery,
+                    deployment, and earning user trust—not just closing tickets.
                   </p>
                 </div>
               </Reveal>
@@ -434,14 +462,14 @@ export default function Page() {
             <Reveal>
               <span className="eyebrow">05 · Contact</span>
               <p className="contact-note">
-                Recently graduated from McGill and actively looking for{" "}
-                <span className="serif">full-time software roles</span>. Happy to
-                work anywhere. Let’s talk.
+                Looking for forward-deployed, applied AI, and product engineering
+                roles where I can stay close to the user and{" "}
+                <span className="serif">own the outcome</span>.
               </p>
               <h2 className="contact-head">
                 Let’s build
                 <br />
-                <span className="serif accent">anything.</span>
+                <span className="serif accent">something useful.</span>
               </h2>
             </Reveal>
             <Reveal className="contact-row" delay={100}>

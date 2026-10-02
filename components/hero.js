@@ -3,23 +3,10 @@
 import { motion } from "framer-motion";
 
 const lines = [
-  [{ t: "I build" }, { t: "and ship" }],
-  [{ t: "websites,", serif: false }],
-  [{ t: "extensions", serif: false }, { t: "&", serif: true, accent: true }],
-  [{ t: "AI systems.", serif: true, accent: true }]
+  [{ t: "I turn messy" }],
+  [{ t: "workflows into" }],
+  [{ t: "working", serif: true, accent: true }, { t: "software." }]
 ];
-
-const lineVariants = {
-  hidden: { y: "110%" },
-  show: (i) => ({
-    y: "0%",
-    transition: {
-      delay: 0.15 + i * 0.08,
-      duration: 0.95,
-      ease: [0.22, 1, 0.36, 1]
-    }
-  })
-};
 
 export default function Hero() {
   return (
@@ -28,21 +15,15 @@ export default function Hero() {
         <div className="hero-top">
           <span className="hero-status">
             <span className="status-dot" aria-hidden="true" />
-            <span className="eyebrow">Available now · Open to full-time SWE roles</span>
+            <span className="eyebrow">Available now · Forward-deployed + applied AI</span>
           </span>
           <span className="eyebrow">Vancouver · Montréal · Remote · Open to relocating</span>
         </div>
 
-        <h1 className="hero-title" aria-label="I build and ship websites, extensions & AI systems.">
+        <h1 className="hero-title" aria-label="I turn messy workflows into working software.">
           {lines.map((line, li) => (
             <span className="line" key={li} aria-hidden="true">
-              <motion.span
-                style={{ display: "inline-block" }}
-                custom={li}
-                variants={lineVariants}
-                initial="hidden"
-                animate="show"
-              >
+              <span className="hero-title-inner">
                 {line.map((w, wi) => (
                   <span
                     key={wi}
@@ -52,7 +33,7 @@ export default function Hero() {
                     {wi < line.length - 1 ? " " : ""}
                   </span>
                 ))}
-              </motion.span>
+              </span>
             </span>
           ))}
         </h1>
@@ -64,10 +45,14 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            Software engineer who turns ambiguous problems into{" "}
-            <span className="serif">deployed products</span>, owning brand,
-            design, build, and ship. I use AI to move fast and build above my
-            weight class.
+            I work where the problem is still fuzzy: talking to users, finding
+            the real constraint, and shipping a useful system. My sweet spot is{" "}
+            <span className="serif">applied AI with real-world edges</span>—browser
+            automation, internal tools, and products people can actually use.
+            <span className="hero-actions">
+              <a className="hero-action primary" href="#work">Explore selected work</a>
+              <a className="hero-action" href="/JaitenKang_Resume.pdf" download>Download résumé</a>
+            </span>
           </motion.p>
 
           <motion.dl
@@ -77,12 +62,12 @@ export default function Hero() {
             transition={{ delay: 0.85, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="hero-fact">
-              <dt>Role</dt>
+              <dt>Current</dt>
               <dd>Software Engineer · Gravity Computers</dd>
             </div>
             <div className="hero-fact">
-              <dt>Focus</dt>
-              <dd>Web · Browser Extensions · AI Agents</dd>
+              <dt>Mode</dt>
+              <dd>Discover → Build → Deploy</dd>
             </div>
             <div className="hero-fact">
               <dt>Education</dt>
@@ -90,7 +75,7 @@ export default function Hero() {
             </div>
             <div className="hero-fact">
               <dt>Seeking</dt>
-              <dd>Full-time Software Engineer roles</dd>
+              <dd>Forward-deployed · Applied AI · Product</dd>
             </div>
           </motion.dl>
         </div>

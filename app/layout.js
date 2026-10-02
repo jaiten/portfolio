@@ -25,9 +25,9 @@ const mono = JetBrains_Mono({
 
 export const metadata = {
   metadataBase: new URL("https://jaitenkang.com"),
-  title: "Jaiten Kang · Software Engineer & Builder",
+  title: "Jaiten Kang · Applied AI & Product Engineer",
   description:
-    "Jaiten Kang turns ambiguous problems into deployed products: production websites, browser extensions, and AI systems. McGill CS '26.",
+    "Jaiten Kang turns ambiguous workflows into deployed software across applied AI, browser automation, and product engineering.",
   keywords: [
     "Jaiten Kang",
     "software engineer",
@@ -36,6 +36,9 @@ export const metadata = {
     "React developer",
     "browser extensions",
     "AI systems",
+    "applied AI engineer",
+    "forward deployed engineer",
+    "browser automation",
     "McGill Computer Science",
     "Vancouver developer",
     "full-stack developer"
@@ -46,9 +49,9 @@ export const metadata = {
     canonical: "/"
   },
   openGraph: {
-    title: "Jaiten Kang · Software Engineer & Builder",
+    title: "Jaiten Kang · Applied AI & Product Engineer",
     description:
-      "Production websites, browser extensions, and AI systems, built and shipped end to end.",
+      "Turning ambiguous workflows into deployed software, from discovery through production.",
     type: "website",
     url: "https://jaitenkang.com",
     locale: "en_US",
@@ -56,9 +59,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jaiten Kang · Software Engineer & Builder",
+    title: "Jaiten Kang · Applied AI & Product Engineer",
     description:
-      "Production websites, browser extensions, and AI systems, built and shipped end to end.",
+      "Turning ambiguous workflows into deployed software, from discovery through production.",
     creator: "@jaitenk"
   },
   robots: {
@@ -85,7 +88,7 @@ const jsonLd = [
     name: "Jaiten Kang",
     url: "https://jaitenkang.com",
     email: "jaitenkangis@gmail.com",
-    jobTitle: "Software Engineer",
+    jobTitle: "Applied AI and Product Engineer",
     worksFor: {
       "@type": "Organization",
       name: "Gravity Computers",
@@ -107,7 +110,7 @@ const jsonLd = [
       "https://linkedin.com/in/jaitenk"
     ],
     description:
-      "Software engineer and builder who turns ambiguous problems into deployed products: production websites, browser extensions, and AI systems.",
+      "Applied AI and product engineer who turns ambiguous workflows into deployed software.",
     knowsAbout: [
       "TypeScript",
       "JavaScript",
