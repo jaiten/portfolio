@@ -15,6 +15,7 @@ function mix(t) {
 }
 
 export default function SkillsGrid({ skills }) {
+  const gridRef   = useRef(null);
   const itemRefs  = useRef({});
   const current   = useRef({});   // key → current proximity (for lerping)
   const mouse     = useRef({ x: -999, y: -999, inside: false });
@@ -30,15 +31,14 @@ export default function SkillsGrid({ skills }) {
       const cx  = r.left + r.width  / 2;
       const cy  = r.top  + r.height / 2;
       const dist = inside ? Math.sqrt((x - cx) ** 2 + (y - cy) ** 2) : 999;
-      const target = Math.max(0, 1 - dist / 100);
+      const target = Math.max(0, 1 - dist / 190);
       const prev   = current.current[key] ?? 0;
       // fast lerp: snappy toward target
       const next = prev + (target - prev) * 0.18;
       current.current[key] = next;
 
       const p = Math.max(0, Math.min(1, next));
-      li.style.color      = mix(p);
-      li.style.paddingLeft = `${p * 11}px`;
+      li.style.color = mix(p);
       li.style.setProperty("--proximity", p);
 
       if (Math.abs(next - target) > 0.002) anyActive = true;
@@ -56,6 +56,13 @@ export default function SkillsGrid({ skills }) {
   }, [tick]);
 
   const handleMove = useCallback((e) => {
+    const grid = gridRef.current;
+    if (grid) {
+      const r = grid.getBoundingClientRect();
+      grid.style.setProperty("--mouse-x", `${e.clientX - r.left}px`);
+      grid.style.setProperty("--mouse-y", `${e.clientY - r.top}px`);
+      grid.style.setProperty("--active", "1");
+    }
     mouse.current.x = e.clientX;
     mouse.current.y = e.clientY;
     mouse.current.inside = true;
@@ -63,6 +70,7 @@ export default function SkillsGrid({ skills }) {
   }, [startLoop]);
 
   const handleLeave = useCallback(() => {
+    gridRef.current?.style.setProperty("--active", "0");
     mouse.current.inside = false;
     startLoop();
   }, [startLoop]);
@@ -70,10 +78,13 @@ export default function SkillsGrid({ skills }) {
   useEffect(() => () => { if (rafId.current) cancelAnimationFrame(rafId.current); }, []);
 
   return (
-    <div className="skills" onMouseMove={handleMove} onMouseLeave={handleLeave}>
-      {skills.map((g) => (
+    <div ref={gridRef} className="skills" onMouseMove={handleMove} onMouseLeave={handleLeave}>
+      {skills.map((g, index) => (
         <div className="skill-col" key={g.title}>
-          <h4>{g.title}</h4>
+          <h4>
+            <span>{g.title}</span>
+            <span className="skill-count">0{index + 1}</span>
+          </h4>
           <ul>
             {g.items.map((s) => (
               <li
