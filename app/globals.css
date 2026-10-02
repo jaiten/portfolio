@@ -848,15 +848,15 @@ img {
 }
 .scard {
   position: relative;
-  border: 1px solid var(--line);
-  border-radius: 16px;
+  border: 1px solid rgba(243, 240, 231, 0.12);
+  border-radius: 18px;
   padding: clamp(1.5rem, 3vw, 2.4rem);
-  background: var(--paper-2);
+  background: var(--ink);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   min-height: 330px;
-  color: inherit;
+  color: var(--paper);
   cursor: pointer;
   transition: transform 0.45s var(--ease), border-color 0.45s var(--ease),
     box-shadow 0.45s var(--ease);
@@ -870,20 +870,20 @@ img {
   position: absolute;
   inset: 0;
   background: radial-gradient(120% 90% at 100% 0%, var(--glow, transparent), transparent 60%);
-  opacity: 0.6;
+  opacity: 1;
   pointer-events: none;
 }
 .scard:hover {
   transform: translateY(-6px);
-  border-color: rgba(22, 20, 13, 0.28);
-  box-shadow: 0 30px 60px -36px rgba(22, 20, 13, 0.4);
+  border-color: rgba(243, 240, 231, 0.28);
+  box-shadow: 0 30px 60px -36px rgba(22, 20, 13, 0.6);
 }
 .scard.is-static {
   cursor: default;
 }
 .scard.is-static:hover {
   transform: none;
-  border-color: var(--line);
+  border-color: rgba(243, 240, 231, 0.12);
   box-shadow: none;
 }
 .scard-top {
@@ -900,9 +900,10 @@ img {
   display: grid;
   place-items: center;
   font-size: 1.5rem;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  box-shadow: 0 10px 24px -16px rgba(22, 20, 13, 0.5);
+  background: rgba(243, 240, 231, 0.08);
+  border: 1px solid rgba(243, 240, 231, 0.16);
+  color: var(--paper);
+  box-shadow: 0 10px 24px -16px rgba(0, 0, 0, 0.7);
   transition: transform 0.45s var(--ease);
 }
 .scard:hover .scard-glyph {
@@ -919,7 +920,8 @@ img {
 .scard.product:hover {
   /* heavier, slower pull upward with a deeper, softer shadow */
   transform: translateY(-10px);
-  box-shadow: 0 44px 76px -40px rgba(22, 20, 13, 0.46);
+  border-color: rgba(243, 240, 231, 0.28);
+  box-shadow: 0 44px 76px -40px rgba(22, 20, 13, 0.7);
   transition: transform 0.85s var(--ease-ios), border-color 0.85s var(--ease-ios),
     box-shadow 0.85s var(--ease-ios);
 }
@@ -950,18 +952,19 @@ img {
 }
 .scard:not(.product):hover {
   transform: translateY(-10px);
-  border-color: rgba(22, 20, 13, 0.28);
-  box-shadow: 0 44px 76px -40px rgba(22, 20, 13, 0.46);
+  border-color: rgba(243, 240, 231, 0.28);
+  box-shadow: 0 44px 76px -40px rgba(22, 20, 13, 0.7);
   /* graceful, slow entry */
   transition: transform 0.85s var(--ease-ios), border-color 0.85s var(--ease-ios),
     box-shadow 0.85s var(--ease-ios);
 }
 .scard:not(.product)::before {
-  transition: opacity 0.85s var(--ease-ios);
+  transition: filter 0.85s var(--ease-ios);
 }
 .scard:not(.product):hover::before {
   /* the glow swells as the card lifts */
-  opacity: 0.95;
+  opacity: 1;
+  filter: brightness(1.35);
 }
 .scard:not(.product) .scard-glyph {
   transition: transform 0.5s var(--ease-ios);
@@ -983,7 +986,7 @@ img {
 .scard-glyph.logo {
   background: none;
   border: none;
-  box-shadow: 0 12px 26px -14px rgba(22, 20, 13, 0.5);
+  box-shadow: 0 12px 26px -14px rgba(0, 0, 0, 0.7);
   overflow: hidden;
 }
 .scard-glyph.logo img {
@@ -999,11 +1002,11 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  color: var(--ink-2);
-  border: 1px solid var(--line);
+  color: rgba(243, 240, 231, 0.75);
+  border: 1px solid rgba(243, 240, 231, 0.16);
   border-radius: 100px;
   padding: 0.3rem 0.6rem;
-  background: var(--paper);
+  background: rgba(243, 240, 231, 0.06);
 }
 .scard-badge .status-dot {
   width: 6px;
@@ -1016,7 +1019,7 @@ img {
   font-size: 0.7rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: rgba(243, 240, 231, 0.55);
   margin-top: 1.8rem;
   position: relative;
 }
@@ -1027,7 +1030,7 @@ img {
   position: relative;
 }
 .scard p {
-  color: var(--ink-2);
+  color: rgba(243, 240, 231, 0.75);
   font-size: 0.98rem;
   line-height: 1.55;
   margin-top: 0.9rem;
@@ -1047,6 +1050,10 @@ img {
   flex-wrap: wrap;
   gap: 0.4rem;
 }
+.scard .tag {
+  color: rgba(243, 240, 231, 0.75);
+  border-color: rgba(243, 240, 231, 0.16);
+}
 .scard-link {
   display: inline-flex;
   align-items: center;
@@ -1054,14 +1061,14 @@ img {
   font-weight: 500;
   font-size: 0.9rem;
   white-space: nowrap;
-  color: var(--ink);
+  color: var(--paper);
   transition: gap 0.3s var(--ease), color 0.3s var(--ease);
 }
 .scard-link .arrow {
   transition: transform 0.3s var(--ease);
 }
 .scard:hover .scard-link {
-  color: var(--accent);
+  color: #ff6a43;
   gap: 0.75rem;
 }
 .scard:hover .scard-link .arrow {
