@@ -155,6 +155,21 @@ const proof = [
   { value: "20%", label: "fewer recurring IT issues" }
 ];
 
+const reasons = [
+  {
+    title: "I can talk to the customer",
+    text: "I ask the questions, write the scope, and explain tradeoffs without hiding behind jargon."
+  },
+  {
+    title: "I can build across the stack",
+    text: "Interface, automation, backend, copy, deployment—I move to whichever layer gets the product over the line."
+  },
+  {
+    title: "I operate what I ship",
+    text: "Years in IT taught me to care about reliability, security, documentation, and the person using it on Monday."
+  }
+];
+
 const Arrow = () => (
   <svg className="arrow" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
     <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -202,6 +217,30 @@ export default function Page() {
             </div>
           </div>
         </div>
+
+        <section className="value-section" aria-labelledby="why-hire-me">
+          <div className="wrap">
+            <Reveal className="value-intro">
+              <span className="eyebrow">Why hire me</span>
+              <h2 id="why-hire-me">
+                I’m useful when the work doesn’t fit neatly in a ticket.
+              </h2>
+              <p>
+                One person can carry the context from the customer conversation
+                through the build, the launch, and the next iteration.
+              </p>
+            </Reveal>
+            <div className="value-grid">
+              {reasons.map((reason, index) => (
+                <Reveal className="value-item" key={reason.title} delay={index * 80}>
+                  <span>0{index + 1}</span>
+                  <h3>{reason.title}</h3>
+                  <p>{reason.text}</p>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* ── WORK / WEBSITES ── */}
         <section className="section" id="work">
@@ -393,28 +432,27 @@ export default function Page() {
             <div className="about-grid">
               <Reveal>
                 <p className="about-lead">
-                  I like the part before the requirements are obvious—and the
-                  part after the demo has to <span className="serif">survive reality</span>.
+                  I learned software from both sides: building it, and being the
+                  person people call when <span className="serif">it breaks</span>.
                 </p>
                 <div className="about-body">
                   <p>
-                    At Gravity Computers I sit close to customers, translate
-                    loosely defined needs into software, and own the path from
-                    first conversation to production. I also introduced LLM
-                    tooling across the development workflow so a one-person
-                    pipeline could move with the range of a larger team.
+                    I started at Gravity Computers in IT, supporting real people
+                    and real businesses across more than 300 devices. That work
+                    taught me where software fails: unclear handoffs, fragile
+                    workflows, and tools designed without the user in the room.
                   </p>
                   <p>
-                    Before that, and still, I lead IT at Gravity Computers,
-                    managing infrastructure across 300+ devices: a 20% drop in
-                    recurring issues from proactive monitoring, and 15% faster
-                    device setup from a standardized, repeatable workflow the
-                    whole team now uses.
+                    I moved into software engineering and began shipping the
+                    fixes myself—client websites, internal workflows, browser
+                    extensions, and AI automation. I still think like an operator:
+                    make it understandable, make it reliable, and make sure it
+                    helps on Monday morning.
                   </p>
                   <p>
-                    I graduated from McGill with a B.Sc. in Computer Science.
-                    I’m looking for a team where engineering includes discovery,
-                    deployment, and earning user trust—not just closing tickets.
+                    I graduated from McGill with a B.Sc. in Computer Science. I’m
+                    looking for a small, ambitious team that wants an engineer who
+                    can handle the customer conversation as well as the code.
                   </p>
                 </div>
               </Reveal>
@@ -462,14 +500,14 @@ export default function Page() {
             <Reveal>
               <span className="eyebrow">05 · Contact</span>
               <p className="contact-note">
-                Looking for forward-deployed, applied AI, and product engineering
-                roles where I can stay close to the user and{" "}
-                <span className="serif">own the outcome</span>.
+                Need someone who can meet the customer, find the real problem,
+                and come back with working software?{" "}
+                <span className="serif">That’s the job I want.</span>
               </p>
               <h2 className="contact-head">
-                Let’s build
+                Give me the problem.
                 <br />
-                <span className="serif accent">something useful.</span>
+                <span className="serif accent">I’ll bring the build.</span>
               </h2>
             </Reveal>
             <Reveal className="contact-row" delay={100}>

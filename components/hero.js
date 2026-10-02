@@ -1,11 +1,7 @@
-"use client";
-
-import { motion } from "framer-motion";
-
 const lines = [
-  [{ t: "I turn messy" }],
-  [{ t: "workflows into" }],
-  [{ t: "working", serif: true, accent: true }, { t: "software." }]
+  [{ t: "I talk to users," }],
+  [{ t: "build the solution," }],
+  [{ t: "and", serif: true }, { t: "ship it.", serif: true, accent: true }]
 ];
 
 export default function Hero() {
@@ -20,7 +16,7 @@ export default function Hero() {
           <span className="eyebrow">Vancouver · Montréal · Remote · Open to relocating</span>
         </div>
 
-        <h1 className="hero-title" aria-label="I turn messy workflows into working software.">
+        <h1 className="hero-title" aria-label="I talk to users, build the solution, and ship it.">
           {lines.map((line, li) => (
             <span className="line" key={li} aria-hidden="true">
               <span className="hero-title-inner">
@@ -39,35 +35,26 @@ export default function Hero() {
         </h1>
 
         <div className="hero-meta">
-          <motion.p
-            className="hero-lede"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          >
-            I work where the problem is still fuzzy: talking to users, finding
-            the real constraint, and shipping a useful system. My sweet spot is{" "}
-            <span className="serif">applied AI with real-world edges</span>—browser
-            automation, internal tools, and products people can actually use.
+          <p className="hero-lede">
+            I’m a McGill CS grad and software engineer at Gravity Computers. I’ve
+            launched client sites, published browser extensions, built AI
+            automation, and managed IT across 300+ devices. Now I’m looking for a{" "}
+            <span className="serif">forward-deployed or applied AI role</span> where
+            I can own a problem from the first conversation to production.
             <span className="hero-actions">
               <a className="hero-action primary" href="#work">Explore selected work</a>
               <a className="hero-action" href="/JaitenKang_Resume.pdf" download>Download résumé</a>
             </span>
-          </motion.p>
+          </p>
 
-          <motion.dl
-            className="hero-facts"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.85, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          >
+          <dl className="hero-facts">
             <div className="hero-fact">
               <dt>Current</dt>
               <dd>Software Engineer · Gravity Computers</dd>
             </div>
             <div className="hero-fact">
-              <dt>Mode</dt>
-              <dd>Discover → Build → Deploy</dd>
+              <dt>Shipped</dt>
+              <dd>5 client sites · 2 browser extensions</dd>
             </div>
             <div className="hero-fact">
               <dt>Education</dt>
@@ -77,7 +64,7 @@ export default function Hero() {
               <dt>Seeking</dt>
               <dd>Forward-deployed · Applied AI · Product</dd>
             </div>
-          </motion.dl>
+          </dl>
         </div>
       </div>
     </section>
