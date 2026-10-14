@@ -1093,10 +1093,11 @@ img {
 .scard:hover,
 .scard.product:hover,
 .scard:not(.product):hover {
-  transform: none;
+  transform: translateY(-9px);
   border-color: var(--accent);
   background: #21180f;
-  box-shadow: inset 0 3px 0 var(--accent), inset 0 0 0 2px rgba(214, 64, 30, 0.18);
+  box-shadow: inset 0 3px 0 var(--accent), inset 0 0 0 2px rgba(214, 64, 30, 0.18),
+    0 28px 36px -28px rgba(22, 20, 13, 0.76);
 }
 .scard:hover .scard-glyph,
 .scard.product:hover .scard-glyph,
