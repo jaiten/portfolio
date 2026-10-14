@@ -1075,6 +1075,42 @@ img {
   transform: translate(3px, -3px);
 }
 
+/* The product and system cards carry the portfolio accent at rest. Their
+   interaction is a contained colour shift, not a lifted tile. */
+.scard,
+.scard.product,
+.scard:not(.product) {
+  border-color: rgba(214, 64, 30, 0.72);
+  box-shadow: inset 0 3px 0 var(--accent);
+}
+.scard-type,
+.scard-link {
+  color: #ff6a43;
+}
+.scard:hover,
+.scard.product:hover,
+.scard:not(.product):hover {
+  transform: none;
+  border-color: var(--accent);
+  background: #21180f;
+  box-shadow: inset 0 3px 0 var(--accent), inset 0 0 0 2px rgba(214, 64, 30, 0.18);
+}
+.scard:hover .scard-glyph,
+.scard.product:hover .scard-glyph,
+.scard:not(.product):hover .scard-glyph {
+  transform: none;
+}
+.scard:hover .scard-glyph:not(.logo) {
+  background: rgba(214, 64, 30, 0.16);
+  border-color: rgba(255, 106, 67, 0.7);
+}
+.scard:hover .scard-link,
+.scard:hover .scard-link .arrow {
+  color: #ff6a43;
+  gap: 0.45rem;
+  transform: none;
+}
+
 /* =========================================================================
    ABOUT
    ========================================================================= */
