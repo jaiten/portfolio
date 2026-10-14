@@ -43,7 +43,7 @@ export default function Hero() {
             I can own a problem from the first conversation to production.
             <span className="hero-actions">
               <a className="hero-action primary" href="#work">Explore selected work</a>
-              <a className="hero-action" href="/JaitenKang_Resume.pdf" download>Download résumé</a>
+              <a className="hero-action" href="#resume">View résumé</a>
             </span>
           </p>
 

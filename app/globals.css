@@ -848,7 +848,8 @@ img {
 }
 .scard {
   position: relative;
-  border: 1px solid rgba(243, 240, 231, 0.08);
+  /* Use the exact ink surface from the proof, value, and contact sections. */
+  border: 1px solid rgba(243, 240, 231, 0.14);
   border-radius: 18px;
   padding: clamp(1.5rem, 3vw, 2.4rem);
   background: var(--ink);
@@ -866,13 +867,9 @@ img {
   outline-offset: 4px;
 }
 .scard::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  /* one vermillion accent only, matching the other dark sections */
-  background: radial-gradient(110% 80% at 100% 0%, rgba(255, 106, 67, 0.1), transparent 62%);
-  opacity: 1;
-  pointer-events: none;
+  /* Kept empty deliberately: these cards share the site's flat ink field,
+     instead of introducing a competing product or AI colour treatment. */
+  content: none;
 }
 .scard:hover {
   transform: translateY(-6px);
@@ -1020,7 +1017,7 @@ img {
   font-size: 0.7rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #ff6a43;
+  color: rgba(243, 240, 231, 0.58);
   margin-top: 1.8rem;
   position: relative;
 }
@@ -1225,6 +1222,66 @@ img {
 .skill-col li:hover::before {
   opacity: 1;
   transform: translateY(calc(-50% - 0.25rem)) scaleY(1);
+}
+
+/* =========================================================================
+   RÉSUMÉ
+   ========================================================================= */
+.resume-section {
+  padding-top: 0;
+}
+.resume-viewer {
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  border-radius: 18px;
+  background: var(--paper-2);
+  box-shadow: 0 30px 60px -42px rgba(22, 20, 13, 0.5);
+}
+.resume-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 1.1rem;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.resume-bar a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--ink);
+  white-space: nowrap;
+  transition: color 0.3s var(--ease-ios), gap 0.3s var(--ease-ios);
+}
+.resume-bar a:hover {
+  color: var(--accent);
+  gap: 0.7rem;
+}
+.resume-bar a .arrow {
+  transition: transform 0.3s var(--ease-ios);
+}
+.resume-bar a:hover .arrow {
+  transform: translate(2px, -2px);
+}
+.resume-viewer iframe {
+  display: block;
+  width: 100%;
+  height: min(76rem, 92vh);
+  border: 0;
+  background: #fff;
+}
+@media (max-width: 760px) {
+  .resume-bar {
+    font-size: 0.64rem;
+  }
+  .resume-viewer iframe {
+    height: 70vh;
+  }
 }
 
 /* =========================================================================

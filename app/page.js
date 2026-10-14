@@ -84,7 +84,6 @@ const websites = [
 const products = [
   {
     logo: "/logos/north.svg",
-    glow: "rgba(49, 87, 68, 0.24)",
     type: "Chrome + Firefox · Live",
     title: "North: Focus & Distraction Blocker",
     desc:
@@ -95,7 +94,6 @@ const products = [
   },
   {
     logo: "/logos/wordcount.svg",
-    glow: "rgba(66, 133, 244, 0.2)",
     type: "Chrome Web Store · Live",
     title: "Word Count for Google Docs",
     desc:
@@ -109,7 +107,6 @@ const products = [
 const systems = [
   {
     glyph: "◇",
-    glow: "rgba(214, 64, 30, 0.18)",
     type: "TypeScript · Playwright · Gemini 2.5",
     live: false,
     status: "2026",
@@ -122,7 +119,6 @@ const systems = [
   },
   {
     glyph: "◉",
-    glow: "rgba(168, 85, 247, 0.18)",
     type: "React · Node.js · Whisper · Gemini",
     live: false,
     status: "In progress",
@@ -323,7 +319,6 @@ export default function Page() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label={`${c.title}, see on Chrome Web Store`}
-                  style={{ "--glow": c.glow }}
                 >
                   <div className="scard-top">
                     <span className="scard-glyph logo" aria-hidden="true">
@@ -386,7 +381,6 @@ export default function Page() {
                 <Reveal
                   className={`scard ${c.url ? "" : "is-static"}`.trim()}
                   key={c.title}
-                  style={{ "--glow": c.glow }}
                   {...linkProps}
                 >
                   <div className="scard-top">
@@ -494,11 +488,44 @@ export default function Page() {
           </div>
         </section>
 
+        {/* ── RÉSUMÉ ── */}
+        <section className="section resume-section" id="resume" aria-labelledby="resume-heading">
+          <div className="wrap">
+            <Reveal className="section-head">
+              <div>
+                <span className="section-index">05 · Résumé</span>
+                <h2 id="resume-heading">
+                  The full <span className="serif">story</span>
+                </h2>
+              </div>
+              <p className="section-note">
+                Experience, education, and the technical details—in one place.
+              </p>
+            </Reveal>
+
+            <Reveal className="resume-viewer">
+              <div className="resume-bar">
+                <span>Jaiten Kang · Résumé</span>
+                <a href="/JaitenKang_Resume.pdf" download>
+                  Download PDF <Arrow />
+                </a>
+              </div>
+              <iframe
+                src="/JaitenKang_Resume.pdf#view=FitH"
+                title="Jaiten Kang résumé"
+                loading="lazy"
+              >
+                <a href="/JaitenKang_Resume.pdf">Open Jaiten Kang’s résumé</a>
+              </iframe>
+            </Reveal>
+          </div>
+        </section>
+
         {/* ── CONTACT ── */}
         <section className="contact" id="contact">
           <div className="wrap">
             <Reveal>
-              <span className="eyebrow">05 · Contact</span>
+              <span className="eyebrow">06 · Contact</span>
               <p className="contact-note">
                 Need someone who can meet the customer, find the real problem,
                 and come back with working software?{" "}
