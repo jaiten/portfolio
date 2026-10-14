@@ -1083,9 +1083,12 @@ img {
   border-color: rgba(214, 64, 30, 0.72);
   box-shadow: inset 0 3px 0 var(--accent);
 }
-.scard-type,
-.scard-link {
+.scard-type {
   color: #ff6a43;
+}
+.scard-link {
+  color: var(--paper);
+  text-shadow: none;
 }
 .scard:hover,
 .scard.product:hover,
@@ -1109,6 +1112,12 @@ img {
   color: #ff6a43;
   gap: 0.45rem;
   transform: none;
+}
+.scard:hover .scard-link {
+  text-shadow: 0 0 18px rgba(255, 106, 67, 0.68);
+}
+.scard:hover .scard-link .arrow {
+  filter: drop-shadow(0 0 6px rgba(255, 106, 67, 0.72));
 }
 
 /* =========================================================================
