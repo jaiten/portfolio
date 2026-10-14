@@ -141,7 +141,7 @@ const skills = [
 const contactLinks = [
   { label: "GitHub", href: "https://github.com/jaiten" },
   { label: "LinkedIn", href: "https://linkedin.com/in/jaitenk" },
-  { label: "Résumé", href: "/JaitenKang_Resume.pdf", download: true }
+  { label: "View résumé", href: "/resume" }
 ];
 
 const proof = [
@@ -488,44 +488,11 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ── RÉSUMÉ ── */}
-        <section className="section resume-section" id="resume" aria-labelledby="resume-heading">
-          <div className="wrap">
-            <Reveal className="section-head">
-              <div>
-                <span className="section-index">05 · Résumé</span>
-                <h2 id="resume-heading">
-                  The full <span className="serif">story</span>
-                </h2>
-              </div>
-              <p className="section-note">
-                Experience, education, and the technical details—in one place.
-              </p>
-            </Reveal>
-
-            <Reveal className="resume-viewer">
-              <div className="resume-bar">
-                <span>Jaiten Kang · Résumé</span>
-                <a href="/JaitenKang_Resume.pdf" download>
-                  Download PDF <Arrow />
-                </a>
-              </div>
-              <iframe
-                src="/JaitenKang_Resume.pdf#view=FitH"
-                title="Jaiten Kang résumé"
-                loading="lazy"
-              >
-                <a href="/JaitenKang_Resume.pdf">Open Jaiten Kang’s résumé</a>
-              </iframe>
-            </Reveal>
-          </div>
-        </section>
-
         {/* ── CONTACT ── */}
         <section className="contact" id="contact">
           <div className="wrap">
             <Reveal>
-              <span className="eyebrow">06 · Contact</span>
+              <span className="eyebrow">05 · Contact</span>
               <p className="contact-note">
                 Need someone who can meet the customer, find the real problem,
                 and come back with working software?{" "}

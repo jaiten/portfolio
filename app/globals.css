@@ -1227,15 +1227,26 @@ img {
 /* =========================================================================
    RÉSUMÉ
    ========================================================================= */
-.resume-section {
-  padding-top: 0;
-}
 .resume-viewer {
   overflow: hidden;
   border: 1px solid var(--ink);
   border-radius: 18px;
   background: var(--paper-2);
   box-shadow: 0 30px 60px -42px rgba(22, 20, 13, 0.5);
+}
+.resume-page {
+  min-height: 100vh;
+  padding-block: clamp(6rem, 12vh, 9rem) clamp(3rem, 8vh, 6rem);
+}
+.resume-page .section-head {
+  margin-bottom: clamp(2rem, 5vh, 4rem);
+}
+.resume-page .section-head h1 {
+  font-size: clamp(2rem, 5.5vw, 4.4rem);
+  letter-spacing: -0.03em;
+}
+.resume-page .section-head h1 .serif {
+  color: var(--accent);
 }
 .resume-bar {
   display: flex;
