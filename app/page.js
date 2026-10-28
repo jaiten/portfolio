@@ -86,7 +86,7 @@ const websites = [
       "A clean, modern site built to establish a strong online presence. Designed and shipped end-to-end with a focus on clarity, performance, and a polished user experience.",
     tags: ["Next.js", "TypeScript", "Tailwind"],
     url: "https://orbit-web-inky.vercel.app/",
-    label: "orbit.com",
+    label: "orbithabit.app",
     shot: "/shots/orbit.png",
     role: "Design → Build → Deploy"
   }
