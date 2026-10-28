@@ -78,6 +78,17 @@ const websites = [
     label: "wilcocivil.ca",
     shot: "/shots/wilco.png",
     role: "Design → Build → Deploy"
+  },
+  {
+    title: "Orbit",
+    kicker: "A modern web presence",
+    desc:
+      "A clean, modern site built to establish a strong online presence. Designed and shipped end-to-end with a focus on clarity, performance, and a polished user experience.",
+    tags: ["Next.js", "TypeScript", "Tailwind"],
+    url: "https://orbit-web-inky.vercel.app/",
+    label: "orbit.com",
+    shot: "/shots/orbit.png",
+    role: "Design → Build → Deploy"
   }
 ];
 
@@ -145,7 +156,7 @@ const contactLinks = [
 ];
 
 const proof = [
-  { value: "5", label: "production sites shipped" },
+  { value: "6", label: "production sites shipped" },
   { value: "2", label: "browser extensions live" },
   { value: "300+", label: "devices managed" },
   { value: "20%", label: "fewer recurring IT issues" }
@@ -249,7 +260,7 @@ export default function Page() {
                 </h2>
               </div>
               <p className="section-note">
-                Five client sites taken from an ambiguous brief through brand,
+                Six client sites taken from an ambiguous brief through brand,
                 copy, design, build, and deployment.
               </p>
             </Reveal>
