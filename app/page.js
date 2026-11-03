@@ -7,6 +7,8 @@ import ProjectShot from "@/components/project-shot";
 import SkillsGrid from "@/components/skills-grid";
 import OrbitDemo from "@/components/orbit-demo";
 import EunoDemo from "@/components/euno-demo";
+import RxDemo from "@/components/rx-demo";
+import OrcaDemo from "@/components/orca-demo";
 
 /* ----------------------------- data ----------------------------- */
 
@@ -132,6 +134,39 @@ const features = {
   }
 };
 
+const orca = {
+  logo: "/logos/orca.svg",
+  badge: "In development",
+  type: "Health tech · 3D body model · AI triage",
+  title: "Orca: triage before the appointment",
+  desc:
+    "A health-tech app that takes over the intake survey. Patients tap where it hurts on a 3D body model, describe it through the same structured questions a doctor asks, and get the likely causes. Patients get reassurance; doctors get a clean summary and skip the first ten minutes of questions.",
+  points: [
+    "Pick the exact area on a 3D model you can turn, front and back",
+    "Structured intake: onset, character, triggers, duration, radiation and severity",
+    "Likely diagnoses, red-flag warnings, and a summary written for the clinician"
+  ],
+  tags: ["3D", "AI", "Health tech", "Triage"],
+  links: [],
+  aside: "Private build · details on request"
+};
+
+const rxremind = {
+  logo: "/logos/rxremind.svg",
+  badge: "2023 · Prototype",
+  type: "Full stack · MongoDB · Express · React · Node · Twilio",
+  title: "RxRemind: prescription reminders by text",
+  desc:
+    "A full-stack app that texts patients when it’s time to take a dose. Prescriptions are created and edited in a React front end, stored in MongoDB through an Express REST API, and delivered as SMS reminders through Twilio, so it works on any phone with no app to install.",
+  points: [
+    "REST API with create, read, update and delete routes backed by Mongoose models",
+    "Twilio messaging for reminders that reach any phone, smart or not",
+    "Personal messages built from each patient’s name, medication and dose"
+  ],
+  tags: ["React", "Express", "MongoDB", "Twilio"],
+  links: [{ label: "View on GitHub", href: "https://github.com/jaiten/RxRemind" }]
+};
+
 const products = [
   {
     logo: "/logos/north.svg",
@@ -173,8 +208,8 @@ const systems = [
 const skills = [
   { title: "Languages", items: ["TypeScript", "JavaScript", "Swift", "Python", "SQL", "Java"] },
   { title: "Frontend & Apps", items: ["React", "Next.js", "SwiftUI", "Electron", "Tailwind", "Framer Motion", "Chrome Extensions (MV3)"] },
-  { title: "AI & Automation", items: ["Agentic pipelines", "LLM orchestration", "Gemini", "Playwright", "On-device speech", "Apple NaturalLanguage"] },
-  { title: "Backend & Ops", items: ["Node.js", "Supabase", "PostgreSQL", "Offline-first sync", "GitHub Actions CI", "AWS EC2", "Linux"] }
+  { title: "AI & Automation", items: ["Agentic pipelines", "LLM orchestration", "Gemini", "Playwright", "On-device speech", "Apple NaturalLanguage", "Three.js"] },
+  { title: "Backend & Ops", items: ["Node.js", "Express", "MongoDB", "Supabase", "PostgreSQL", "Offline-first sync", "Twilio", "GitHub Actions CI", "AWS EC2"] }
 ];
 
 const contactLinks = [
@@ -185,7 +220,7 @@ const contactLinks = [
 
 const proof = [
   { value: "6", label: "production sites shipped" },
-  { value: "3", label: "apps & extensions shipped" },
+  { value: "5", label: "apps & extensions built" },
   { value: "300+", label: "devices managed" },
   { value: "20%", label: "fewer recurring IT issues" }
 ];
@@ -237,6 +272,7 @@ function Feature({ f, demo, label, stage = "" }) {
           ))}
         </div>
         <div className="feature-links">
+          {f.aside ? <span className="scard-link is-muted">{f.aside}</span> : null}
           {f.links.map((l) => (
             <a className="scard-link" key={l.href} href={l.href} target="_blank" rel="noreferrer">
               {l.label} <Arrow />
@@ -430,6 +466,9 @@ export default function Page() {
                 </Reveal>
               ))}
             </div>
+
+            <div className="feature-gap" />
+            <Feature f={rxremind} demo={<RxDemo />} label="Live demo · schedule a dose" stage="is-rx" />
           </div>
         </section>
 
@@ -450,6 +489,8 @@ export default function Page() {
             </Reveal>
 
             <Feature f={features.euno} demo={<EunoDemo />} label="Live demo · search the notes" stage="is-euno" />
+
+            <Feature f={orca} demo={<OrcaDemo />} label="Live demo · tap where it hurts" stage="is-orca" />
 
             <div className="card-grid is-single">
               {systems.map((c) => {
