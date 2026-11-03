@@ -14,12 +14,14 @@ const EXAMPLES = ["dentist fri 9am #health", "book ideas someday", "water plants
 const START_TASKS = [
   { id: 1, title: "Send the invoice", time: 600, list: "work", done: true },
   { id: 2, title: "Groceries for the week", time: null, list: null, done: false },
-  { id: 3, title: "Review onboarding copy", time: 900, list: "work", done: false }
+  { id: 3, title: "Review onboarding copy", time: 900, list: "work", done: false },
+  { id: 4, title: "Book a haircut", time: null, list: null, done: false }
 ];
 
 const START_HABITS = [
   { id: 1, title: "Read 20 pages", days: [1, 1, 0, 1, 1, 1, 0], color: "#6E8C78" },
-  { id: 2, title: "Walk outside", days: [0, 1, 1, 0, 1, 0, 0], color: "#8C85BF" }
+  { id: 2, title: "Walk outside", days: [0, 1, 1, 0, 1, 0, 0], color: "#8C85BF" },
+  { id: 3, title: "Drink water", days: [1, 1, 1, 1, 0, 1, 0], color: "#53AAA4" }
 ];
 
 const HABIT_COLORS = ["#D19E4D", "#53AAA4", "#729ED2", "#E87359"];
@@ -76,12 +78,12 @@ export default function OrbitDemo() {
     const id = nextId.current++;
     if (r.kind === "habit") {
       setHabits((h) => [
-        ...h.slice(-2),
+        ...h.slice(1),
         { id, title: r.title, days: [0, 0, 0, 0, 0, 0, 0], color: HABIT_COLORS[id % HABIT_COLORS.length], fresh: true }
       ]);
       flash(`New habit · ${parts.slice(1).join(" · ")}`);
     } else if (r.date === dayKey(new Date())) {
-      setTasks((t) => [...t.slice(-3), { id, title: r.title, time: r.time, list: r.list, done: false, fresh: true }]);
+      setTasks((t) => [...t.slice(1), { id, title: r.title, time: r.time, list: r.list, done: false, fresh: true }]);
     } else {
       flash(`Added to ${parts.slice(1).join(" · ")}`);
     }
@@ -193,7 +195,7 @@ export default function OrbitDemo() {
                 strokeLinecap="round"
                 strokeDasharray={`${pct * 94.25} 94.25`}
                 transform="rotate(-90 18 18)"
-                style={{ transition: "stroke-dasharray 0.7s cubic-bezier(0.16,1,0.3,1)" }}
+                style={{ opacity: pct ? 1 : 0, transition: "stroke-dasharray 0.7s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease" }}
               />
             </svg>
             <span>

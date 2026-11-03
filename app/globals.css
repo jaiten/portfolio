@@ -1396,14 +1396,18 @@ img {
   transform: scale(0.93);
 }
 .odemo-chiprow {
-  min-height: 2rem;
+  height: 2rem;
+  overflow: hidden;
   margin-top: 0.55rem;
   display: flex;
   align-items: center;
 }
 .odemo-chip {
   display: inline-flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
   align-items: center;
   gap: 0.4rem;
   padding: 0.3rem 0.8rem;
@@ -1431,13 +1435,18 @@ img {
 }
 .odemo-hint {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  max-width: 100%;
   align-items: center;
   gap: 0.3rem;
   font-size: 11.5px;
   color: var(--o-muted);
 }
 .odemo .odemo-hint button {
+  flex: none;
   padding: 0.2rem 0.55rem;
   border-radius: 100px;
   border: 1px solid var(--o-line);
