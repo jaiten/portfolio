@@ -1,122 +1,230 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-/* Orca: tap where it hurts on a 3D body, answer the intake questions a doctor
-   would ask, and get likely causes plus a summary written for the clinician.
-   This demo scores a small hand-written table so it runs in the page; it is an
-   illustration of the flow, not medical advice. */
+/* Orca's flow: tap one of the model's 75 regions, answer the app's guided
+   survey (its own options and prompts), and read the results the way the app
+   shows them: a likelihood ring, "Our best guess", other possibilities, and
+   anything at 10% or less grouped as "Unsure / Something Else".
+   The app sends the answers to an LLM backend; this demo scores a small
+   hand-written table instead, so it runs in the page. Not medical advice. */
 
 const OrcaBody = dynamic(() => import("./orca-body"), {
   ssr: false,
   loading: () => <div className="orca-canvas orca-loading">Loading 3D model…</div>
 });
 
-const REGIONS = ["head", "neck", "chest", "upper back", "abdomen", "lower back", "shoulder", "arm", "hip", "leg", "knee"];
+// Shortcuts to a representative region of the model.
+const QUICK = {
+  Head: "Skull (Frontal)",
+  Face: "Face (Sinuses)",
+  Neck: "Neck (Posterior)",
+  Shoulder: "Right Shoulder",
+  Chest: "Left Chest",
+  Abdomen: "Abdomen (RLQ)",
+  "Lower back": "Back (Lower)",
+  Wrist: "Right Wrist",
+  Hip: "Right Hip",
+  Knee: "Right Anterior Knee",
+  Calf: "Left Calf",
+  Ankle: "Right Lateral Ankle"
+};
 
-const QUESTIONS = [
-  { key: "onset", label: "How did it start?", options: ["sudden", "gradual"] },
-  { key: "quality", label: "What does it feel like?", options: ["sharp", "dull ache", "burning", "pressure", "throbbing"] },
-  { key: "worse", label: "What makes it worse?", options: ["movement", "eating", "breathing", "lying down", "nothing"] },
-  { key: "duration", label: "How long has it lasted?", options: ["hours", "days", "weeks"] },
-  { key: "spreads", label: "Does it spread anywhere?", options: ["no", "yes"] }
+// The app's own answer options (app/survey.tsx).
+const SWELLING = ["Swelling", "Discoloration", "Bruising", "None of those"];
+const PAIN = ["Radiating", "Aching/Dull", "Throbbing", "Crushing", "Burning", "Stinging", "Sharp/Shooting", "Tingling", "Stiff / Tight", "None of those"];
+const ONSET = ["I got injured", "All of a sudden / Overnight", "It's gotten worse over time", "None of the above"];
+const CONSTANT = ["Yes, it's constant", "It comes up intermittently", "It worsens with certain actions", "None of those"];
+const SEV_COLORS = ["#22c55e", "#65a30d", "#84cc16", "#eab308", "#f59e0b", "#f97316", "#ea580c", "#dc2626", "#b91c1c", "#991b1b"];
+
+const STEPS = [
+  { key: "swelling", head: "Sorry to hear!\nLet's find out why...", q: "Do you notice any of these?", options: SWELLING, multi: true },
+  { key: "pain", head: "Interesting,\nlet's try these questions...", q: "How would you describe the pain?", options: PAIN, multi: true },
+  { key: "severity", head: "Tell us a little\nmore about this...", q: "How bad is it, from 1 to 10?" },
+  { key: "onset", head: "Almost there,\njust a few more things...", q: "How did it start?", options: ONSET, multi: true },
+  { key: "constant", head: "Just one\nmore step...", q: "Is it constant?", options: CONSTANT }
 ];
 
-// weights: "key:value" -> points; sev: points per severity step above 5
-const C = (name, note, w, sev = 0) => ({ name, note, w, sev });
-const CONDITIONS = {
+// Region groups by model region name.
+const groupOf = (r) => {
+  if (/^Skull|Forehead/.test(r)) return "head";
+  if (/^Face/.test(r)) return "face";
+  if (/^Neck/.test(r)) return "neck";
+  if (/Shoulder|Axilla/.test(r)) return "shoulder";
+  if (/Chest/.test(r)) return "chest";
+  if (/Back \((Upper|Middle)\)/.test(r)) return "upper back";
+  if (/Back \(Lower\)|Buttocks/.test(r)) return "lower back";
+  if (/^Abdomen/.test(r)) return "abdomen";
+  if (/Elbow|Arm|Forearm/.test(r)) return "arm";
+  if (/Wrist|Hand|Thumb|Fingers/.test(r)) return "hand";
+  if (/Hip|Groin/.test(r)) return "hip";
+  if (/Thigh/.test(r)) return "thigh";
+  if (/Knee/.test(r)) return "knee";
+  if (/Calf|Shin/.test(r)) return "lower leg";
+  return "foot";
+};
+
+// [name, description, weights, severity weight, only-for-region pattern]
+const T = (name, desc, w, sev = 0, only = null) => ({ name, desc, w, sev, only });
+const TABLE = {
   head: [
-    C("Tension headache", "Band-like pressure, often with stress or screen time", { "quality:pressure": 3, "quality:dull ache": 2, "onset:gradual": 2, "duration:days": 1 }, -0.3),
-    C("Migraine", "Throbbing, often one-sided, can come with light sensitivity", { "quality:throbbing": 4, "duration:hours": 2, "worse:movement": 1 }, 0.4),
-    C("Sinusitis", "Pressure around the eyes and forehead, worse bending over", { "quality:pressure": 2, "duration:days": 2, "worse:lying down": 2 })
+    T("Tension headache", "A band of pressure around the head, often linked to stress, posture or screens.", { "pain:Aching/Dull": 3, "pain:Stiff / Tight": 2, "onset:It's gotten worse over time": 2, "constant:Yes, it's constant": 1 }, -0.2),
+    T("Migraine", "Throbbing pain, often on one side, sometimes with nausea or light sensitivity.", { "pain:Throbbing": 4, "onset:All of a sudden / Overnight": 1, "constant:It comes up intermittently": 2 }, 0.4),
+    T("Head contusion", "A bruise from a knock to the head; watch for confusion or vomiting.", { "onset:I got injured": 5, "swelling:Swelling": 2, "swelling:Bruising": 2 })
+  ],
+  face: [
+    T("Sinusitis", "Pressure behind the cheeks, nose and eyes, often after a cold.", { "pain:Aching/Dull": 2, "pain:Throbbing": 1, "onset:It's gotten worse over time": 2, "constant:Yes, it's constant": 2 }),
+    T("TMJ dysfunction", "Jaw joint pain, worse chewing or yawning, sometimes with clicking.", { "constant:It worsens with certain actions": 3, "pain:Aching/Dull": 1, "pain:Stiff / Tight": 2 }),
+    T("Dental infection", "Throbbing pain near a tooth, sometimes with facial swelling.", { "pain:Throbbing": 3, "swelling:Swelling": 2 }, 0.3)
   ],
   neck: [
-    C("Muscle strain", "Stiffness after sleep, posture or exercise", { "worse:movement": 3, "quality:dull ache": 2, "onset:sudden": 1 }),
-    C("Tension and posture", "Builds through the day, eases with rest", { "onset:gradual": 2, "quality:dull ache": 2, "duration:weeks": 2 }),
-    C("Pinched nerve", "Pain that travels into the shoulder or arm", { "spreads:yes": 4, "quality:sharp": 1, "quality:burning": 2 })
-  ],
-  chest: [
-    C("Chest wall strain", "Tender to touch, worse with movement", { "worse:movement": 3, "quality:sharp": 2 }),
-    C("Acid reflux", "Burning behind the breastbone after meals", { "quality:burning": 4, "worse:eating": 3, "worse:lying down": 2 }),
-    C("Costochondritis", "Sharp pain where ribs meet the breastbone", { "quality:sharp": 2, "worse:breathing": 3, "duration:days": 1 })
-  ],
-  "upper back": [
-    C("Muscle strain", "Usually after lifting or a long day at a desk", { "worse:movement": 3, "onset:sudden": 1, "quality:dull ache": 1 }),
-    C("Postural strain", "Aches that build over weeks of sitting", { "onset:gradual": 2, "duration:weeks": 3, "quality:dull ache": 2 }),
-    C("Nerve irritation", "Pain that wraps around or travels", { "spreads:yes": 4, "quality:burning": 2 })
-  ],
-  abdomen: [
-    C("Indigestion or gastritis", "Burning or fullness linked to meals", { "quality:burning": 3, "worse:eating": 4 }),
-    C("Gastroenteritis", "Cramping that comes on fast, often with nausea", { "onset:sudden": 2, "duration:hours": 2, "duration:days": 1, "quality:dull ache": 1, "quality:sharp": 1, "worse:eating": 1 }),
-    C("Constipation", "Dull, crampy discomfort that builds slowly", { "onset:gradual": 2, "quality:dull ache": 2, "duration:days": 1 }),
-    C("Appendicitis", "Sharp pain that worsens, often lower right", { "quality:sharp": 2, "worse:movement": 2, "duration:days": 1 }, 0.7)
-  ],
-  "lower back": [
-    C("Muscle strain", "After lifting or twisting; eases with gentle movement", { "worse:movement": 3, "onset:sudden": 2, "quality:dull ache": 1 }),
-    C("Disc irritation", "Sharp or burning pain that travels down a leg", { "spreads:yes": 4, "quality:sharp": 1, "quality:burning": 2 }),
-    C("Kidney stone", "Severe waves of pain in the flank, nothing helps", { "onset:sudden": 2, "quality:sharp": 2, "worse:nothing": 3 }, 0.6)
+    T("Neck muscle strain", "Stiffness after sleeping awkwardly, posture or exercise.", { "pain:Stiff / Tight": 3, "pain:Aching/Dull": 2, "constant:It worsens with certain actions": 2 }),
+    T("Cervical radiculopathy", "A pinched nerve; pain or tingling that travels into the arm.", { "pain:Radiating": 4, "pain:Tingling": 3, "pain:Sharp/Shooting": 1 }),
+    T("Swollen lymph nodes", "Tender lumps, usually from an infection nearby.", { "swelling:Swelling": 4, "onset:All of a sudden / Overnight": 1 })
   ],
   shoulder: [
-    C("Rotator cuff strain", "Pain lifting the arm or reaching overhead", { "worse:movement": 4, "quality:sharp": 1 }),
-    C("Bursitis", "Dull ache, worse lying on that side", { "quality:dull ache": 2, "worse:lying down": 3, "onset:gradual": 1 }),
-    C("Frozen shoulder", "Stiffness that slowly limits movement", { "duration:weeks": 3, "onset:gradual": 2 })
+    T("Rotator cuff tendinopathy", "Pain lifting or reaching overhead, often worse at night.", { "constant:It worsens with certain actions": 4, "pain:Aching/Dull": 2, "onset:It's gotten worse over time": 2 }),
+    T("Shoulder sprain", "Overstretched ligaments after a fall or sudden pull.", { "onset:I got injured": 4, "swelling:Swelling": 1, "swelling:Bruising": 2, "pain:Sharp/Shooting": 1 }),
+    T("Subacromial bursitis", "Inflamed cushioning in the shoulder; dull ache with movement.", { "pain:Aching/Dull": 2, "swelling:Swelling": 1, "constant:It comes up intermittently": 1 })
+  ],
+  chest: [
+    T("Costochondritis", "Inflamed cartilage where the ribs meet the breastbone; tender to press.", { "pain:Sharp/Shooting": 3, "constant:It worsens with certain actions": 2 }),
+    T("Chest wall strain", "A pulled muscle between or over the ribs.", { "onset:I got injured": 2, "constant:It worsens with certain actions": 3, "pain:Aching/Dull": 1 }),
+    T("Acid reflux", "Burning behind the breastbone, often after meals or lying down.", { "pain:Burning": 5, "constant:It comes up intermittently": 2 })
+  ],
+  "upper back": [
+    T("Thoracic muscle strain", "Aching between the shoulder blades from lifting or long desk days.", { "pain:Aching/Dull": 3, "pain:Stiff / Tight": 2, "constant:It worsens with certain actions": 2 }),
+    T("Rib contusion", "A bruised rib after a fall or knock; hurts to breathe deeply.", { "onset:I got injured": 5, "swelling:Bruising": 2, "pain:Sharp/Shooting": 1 }),
+    T("Thoracic nerve irritation", "Burning or shooting pain that wraps around the chest.", { "pain:Burning": 3, "pain:Radiating": 3 })
+  ],
+  abdomen: [
+    T("Gastroenteritis", "Stomach bug: cramping that comes on fast, often with nausea.", { "onset:All of a sudden / Overnight": 3, "pain:Aching/Dull": 1, "constant:It comes up intermittently": 2 }),
+    T("Indigestion", "Burning or fullness in the upper belly, linked to meals.", { "pain:Burning": 4, "constant:It comes up intermittently": 1 }, 0, /UQ/),
+    T("Constipation", "Dull, crampy discomfort that builds over days.", { "pain:Aching/Dull": 2, "onset:It's gotten worse over time": 2 }, -0.2, /LQ/),
+    T("Appendicitis", "Pain near the navel that moves to the lower right and keeps getting worse.", { "pain:Sharp/Shooting": 3, "onset:It's gotten worse over time": 1, "constant:Yes, it's constant": 2 }, 0.7, /RLQ/),
+    T("Biliary colic", "Gallbladder pain under the right ribs, often after fatty meals.", { "pain:Sharp/Shooting": 1, "pain:Crushing": 2, "constant:It comes up intermittently": 2 }, 0.4, /RUQ/),
+    T("Diverticulitis", "Lower left belly pain, sometimes with fever.", { "pain:Aching/Dull": 1, "constant:Yes, it's constant": 2, "onset:It's gotten worse over time": 1 }, 0.4, /LLQ/)
+  ],
+  "lower back": [
+    T("Lumbar muscle strain", "After lifting or twisting; eases with gentle movement.", { "onset:I got injured": 2, "pain:Stiff / Tight": 2, "pain:Aching/Dull": 2, "constant:It worsens with certain actions": 2 }),
+    T("Sciatica", "A pinched nerve; pain, burning or tingling that runs down the leg.", { "pain:Radiating": 4, "pain:Tingling": 2, "pain:Sharp/Shooting": 2 }),
+    T("Kidney stone", "Severe waves of flank pain that nothing seems to ease.", { "onset:All of a sudden / Overnight": 3, "pain:Sharp/Shooting": 2, "constant:It comes up intermittently": 1 }, 0.6)
   ],
   arm: [
-    C("Muscle strain", "After exercise or carrying something heavy", { "worse:movement": 3, "onset:sudden": 1 }),
-    C("Tendinitis", "Overuse pain near the elbow or wrist", { "onset:gradual": 2, "worse:movement": 2, "duration:weeks": 1 }),
-    C("Nerve compression", "Burning, tingling or pain that travels", { "quality:burning": 3, "spreads:yes": 3 })
+    T("Muscle strain", "After lifting, throwing or a new workout.", { "onset:I got injured": 2, "constant:It worsens with certain actions": 3 }),
+    T("Lateral epicondylitis", "Tennis elbow: outer elbow pain when gripping or lifting.", { "onset:It's gotten worse over time": 3, "constant:It worsens with certain actions": 2 }, 0, /Elbow|Forearm/),
+    T("Contusion", "A bruise from a knock; tender and discoloured.", { "onset:I got injured": 3, "swelling:Bruising": 3, "swelling:Discoloration": 1 })
+  ],
+  hand: [
+    T("Carpal tunnel syndrome", "Tingling or numbness in the thumb and fingers, worse at night.", { "pain:Tingling": 5, "pain:Burning": 1, "onset:It's gotten worse over time": 2 }),
+    T("Wrist sprain", "Overstretched ligaments, usually from a fall onto the hand.", { "onset:I got injured": 4, "swelling:Swelling": 2, "swelling:Bruising": 1 }),
+    T("De Quervain's tenosynovitis", "Pain at the thumb side of the wrist when gripping.", { "constant:It worsens with certain actions": 3, "onset:It's gotten worse over time": 1 })
   ],
   hip: [
-    C("Hip bursitis", "Ache on the outside of the hip, worse lying on it", { "worse:lying down": 3, "quality:dull ache": 2 }),
-    C("Muscle strain", "After running, twisting or a new workout", { "worse:movement": 3, "onset:sudden": 2 }),
-    C("Osteoarthritis", "Stiff and achy, slowly worse over months", { "duration:weeks": 3, "onset:gradual": 2, "quality:dull ache": 1 })
+    T("Hip flexor strain", "Pain at the front of the hip after running or kicking.", { "onset:I got injured": 2, "constant:It worsens with certain actions": 3 }),
+    T("Trochanteric bursitis", "Ache on the outside of the hip, worse lying on that side.", { "pain:Aching/Dull": 3, "onset:It's gotten worse over time": 2 }),
+    T("Inguinal hernia", "A bulge in the groin that aches when lifting or coughing.", { "swelling:Swelling": 4, "constant:It worsens with certain actions": 2 }, 0, /Groin/)
   ],
-  leg: [
-    C("Muscle strain or cramp", "Tight, sore muscle after activity", { "worse:movement": 2, "onset:sudden": 2, "duration:hours": 1 }),
-    C("Shin splints", "Ache along the shin from running or impact", { "worse:movement": 3, "onset:gradual": 2 }),
-    C("Sciatica", "Pain running from the buttock down the leg", { "spreads:yes": 4, "quality:burning": 1, "quality:sharp": 1 })
+  thigh: [
+    T("Hamstring or quad strain", "A pulled muscle; sudden pain during a sprint or kick.", { "onset:I got injured": 3, "pain:Sharp/Shooting": 2, "constant:It worsens with certain actions": 1 }),
+    T("Thigh contusion", "A dead leg: deep bruise from a direct knock.", { "onset:I got injured": 3, "swelling:Bruising": 3, "swelling:Swelling": 1 }),
+    T("Meralgia paresthetica", "Burning or tingling on the outer thigh from a compressed nerve.", { "pain:Burning": 3, "pain:Tingling": 3 })
   ],
   knee: [
-    C("Sprain", "Twisted or knocked; swelling and pain moving it", { "onset:sudden": 3, "worse:movement": 2, "quality:sharp": 1 }),
-    C("Patellar tendinitis", "Pain below the kneecap with stairs or jumping", { "onset:gradual": 2, "worse:movement": 3 }),
-    C("Osteoarthritis", "Stiff and achy, worse in the morning", { "duration:weeks": 3, "quality:dull ache": 2, "onset:gradual": 1 })
+    T("Ligament sprain", "Twisted or knocked knee with swelling and pain moving it.", { "onset:I got injured": 4, "swelling:Swelling": 2, "swelling:Bruising": 1 }),
+    T("Meniscus tear", "Twisting injury; swelling, catching or locking of the knee.", { "onset:I got injured": 3, "swelling:Swelling": 2, "constant:It worsens with certain actions": 2 }),
+    T("Patellofemoral pain", "Ache around the kneecap with stairs, squats or sitting long.", { "pain:Aching/Dull": 2, "onset:It's gotten worse over time": 2, "constant:It worsens with certain actions": 2 }),
+    T("Osteoarthritis", "Stiff, achy knee that builds over months, worse in the morning.", { "pain:Stiff / Tight": 3, "onset:It's gotten worse over time": 3 })
+  ],
+  "lower leg": [
+    T("Shin splints", "Ache along the shin from running or impact.", { "onset:It's gotten worse over time": 2, "constant:It worsens with certain actions": 3 }, 0, /Shin/),
+    T("Calf strain", "A sudden pull or pop in the calf while pushing off.", { "onset:I got injured": 3, "pain:Sharp/Shooting": 2 }, 0, /Calf/),
+    T("Deep vein thrombosis", "A clot in a leg vein: a swollen, warm, aching calf. Needs prompt care.", { "swelling:Swelling": 3, "swelling:Discoloration": 2, "constant:Yes, it's constant": 2, "pain:Aching/Dull": 1 }, 0, /Calf/),
+    T("Contusion", "A bruise from a knock; tender and discoloured.", { "onset:I got injured": 3, "swelling:Bruising": 3 })
+  ],
+  foot: [
+    T("Ankle sprain", "Rolled ankle with swelling and bruising on the outside.", { "onset:I got injured": 4, "swelling:Swelling": 2, "swelling:Bruising": 2 }, 0, /Ankle/),
+    T("Plantar fasciitis", "Heel pain, worst with the first steps in the morning.", { "pain:Stiff / Tight": 2, "pain:Sharp/Shooting": 2, "onset:It's gotten worse over time": 2 }, 0, /Heel|Plantar/),
+    T("Achilles tendinopathy", "Pain and stiffness at the back of the heel.", { "pain:Stiff / Tight": 3, "constant:It worsens with certain actions": 2 }, 0, /Posterior|Heel/),
+    T("Gout", "Sudden, very painful, red and swollen joint, often the big toe.", { "onset:All of a sudden / Overnight": 3, "swelling:Swelling": 2, "swelling:Discoloration": 2 }, 0.5, /Toes|Medial Foot/),
+    T("Foot sprain or bruise", "Injury to the foot's ligaments or soft tissue.", { "onset:I got injured": 3, "swelling:Bruising": 1 })
   ]
 };
 
-const redFlag = (region, a) => {
-  if (region === "chest" && (a.quality === "pressure" || a.spreads === "yes"))
-    return "Chest pressure or pain that spreads can be an emergency. Call emergency services.";
-  if (region === "head" && a.onset === "sudden" && a.severity >= 8)
-    return "A sudden, severe headache needs urgent care today.";
-  if (region === "abdomen" && a.quality === "sharp" && a.severity >= 7)
-    return "Severe, sharp abdominal pain should be seen today.";
+const redFlag = (region, group, a) => {
+  if (group === "chest" && (a.pain.includes("Crushing") || a.pain.includes("Radiating")))
+    return "Crushing or spreading chest pain can be a heart attack. Call emergency services now.";
+  if (group === "lower leg" && /Calf/.test(region) && a.swelling.includes("Swelling"))
+    return "A swollen, painful calf can mean a blood clot. Get it checked today.";
+  if (/RLQ/.test(region) && a.severity >= 7) return "Severe lower-right belly pain should be seen today.";
+  if (group === "head" && a.onset.includes("All of a sudden / Overnight") && a.severity >= 8)
+    return "A sudden, severe headache needs urgent care.";
   if (a.severity >= 9) return "Pain this severe should be assessed by a clinician today.";
   return null;
 };
 
-const score = (region, a) => {
-  const list = (CONDITIONS[region] || []).map((c) => {
+function diagnose(region, a) {
+  const group = groupOf(region);
+  const pool = (TABLE[group] || []).filter((c) => !c.only || c.only.test(region));
+  const scored = pool.map((c) => {
     let s = 1;
-    Object.entries(a).forEach(([k, v]) => (s += c.w[`${k}:${v}`] || 0));
+    const add = (k, v) => (s += c.w[`${k}:${v}`] || 0);
+    a.swelling.forEach((v) => add("swelling", v));
+    a.pain.forEach((v) => add("pain", v));
+    a.onset.forEach((v) => add("onset", v));
+    add("constant", a.constant);
     s += (a.severity - 5) * c.sev;
-    return { ...c, s: Math.max(0.5, s) };
+    return { ...c, s: Math.max(0.3, s) };
   });
-  list.sort((x, y) => y.s - x.s);
-  const top = list[0]?.s || 1;
-  return list.slice(0, 3).map((c, i) => ({ ...c, pct: c.s / top, label: i === 0 ? "Most likely" : c.s / top > 0.7 ? "Possible" : "Less likely" }));
-};
+  const unsure = 2.2;
+  const total = scored.reduce((t, c) => t + c.s * c.s, 0) + unsure * unsure;
+  const list = scored
+    .map((c) => ({ name: c.name, desc: c.desc, likelihood: Math.round(((c.s * c.s) / total) * 100) }))
+    .sort((x, y) => y.likelihood - x.likelihood);
+  const shown = list.filter((c) => c.likelihood > 10);
+  const rest = 100 - shown.reduce((t, c) => t + c.likelihood, 0);
+  return { group, shown, rest, best: shown[0] || list[0] };
+}
 
-const START = { onset: null, quality: null, worse: null, duration: null, spreads: null, severity: 5 };
+const RING = ["#4CAF50", "#8BC34A", "#FFC107", "#FFC107"];
+
+function Ring({ shown, rest }) {
+  const segs = [...shown.map((c, i) => ({ v: c.likelihood, color: RING[i] || "#FFC107" })), ...(rest > 0 ? [{ v: rest, color: "#F44336" }] : [])];
+  const R = 38;
+  const C = 2 * Math.PI * R;
+  let off = 0;
+  return (
+    <svg viewBox="0 0 100 100" width="104" height="104" className="orca-ring" aria-hidden="true">
+      <circle cx="50" cy="50" r={R} fill="none" stroke="#e8eef3" strokeWidth="11" />
+      {segs.map((s, i) => {
+        const len = (s.v / 100) * C;
+        const el = (
+          <circle key={i} cx="50" cy="50" r={R} fill="none" stroke={s.color} strokeWidth="11" strokeDasharray={`${Math.max(len - 1.5, 0)} ${C}`} strokeDashoffset={-off} transform="rotate(-90 50 50)" style={{ animationDelay: `${i * 0.08}s` }} />
+        );
+        off += len;
+        return el;
+      })}
+      <text x="50" y="47" textAnchor="middle" fontSize="15" fontWeight="700" fill="#0f1e2c">
+        {shown[0] ? `${shown[0].likelihood}%` : "?"}
+      </text>
+      <text x="50" y="61" textAnchor="middle" fontSize="7.5" fill="#5d6d7c">
+        best guess
+      </text>
+    </svg>
+  );
+}
+
+const START = { swelling: [], pain: [], severity: 0, onset: [], constant: "" };
 
 export default function OrcaDemo() {
   const [region, setRegion] = useState(null);
-  const [answers, setAnswers] = useState(START);
-  const [step, setStep] = useState("pick");
+  const [a, setA] = useState(START);
+  const [step, setStep] = useState(0); // 0 pick, 1..5 survey, 6 results
   const [near, setNear] = useState(false);
   const root = useRef(null);
+  const body = useRef(null);
 
-  // Load the 3D model only when the demo is close to the screen.
   useEffect(() => {
     const el = root.current;
     const io = new IntersectionObserver(([e]) => e.isIntersecting && (setNear(true), io.disconnect()), { rootMargin: "400px" });
@@ -124,121 +232,167 @@ export default function OrcaDemo() {
     return () => io.disconnect();
   }, []);
 
+  useEffect(() => {
+    body.current?.scrollTo({ top: 0 });
+  }, [step]);
+
   const pick = (r) => {
     setRegion(r);
-    setAnswers(START);
-    setStep("ask");
+    setA(START);
+    setStep(0);
   };
-  const set = (k, v) => setAnswers((a) => ({ ...a, [k]: v }));
-  const answered = QUESTIONS.every((q) => answers[q.key]);
-  const results = step === "result" ? score(region, answers) : [];
-  const flag = step === "result" ? redFlag(region, answers) : null;
+  const toggle = (key, v) =>
+    setA((s) => {
+      const none = /none|not applicable/i.test(v);
+      const cur = s[key];
+      const next = none ? [v] : cur.includes(v) ? cur.filter((x) => x !== v) : [...cur.filter((x) => !/none|not applicable/i.test(x)), v];
+      return { ...s, [key]: next };
+    });
+
+  const cur = STEPS[step - 1];
+  const answered = cur ? (cur.key === "severity" ? a.severity > 0 : cur.multi ? a[cur.key].length > 0 : !!a[cur.key]) : !!region;
+  const result = useMemo(() => (step === 6 ? diagnose(region, a) : null), [step, region, a]);
+  const flag = step === 6 ? redFlag(region, groupOf(region), a) : null;
+  const side = region && /^(Left|Right)/.exec(region)?.[1];
 
   return (
     <div className="orca" ref={root} aria-label="Interactive Orca triage demo">
       <div className="orca-stage">
         {near ? <OrcaBody selected={region} onPick={pick} /> : <div className="orca-canvas orca-loading" />}
-        <span className="orca-hint">{region ? `Selected: ${region.charAt(0).toUpperCase() + region.slice(1)}` : "Drag to turn · tap where it hurts"}</span>
+        <span className="orca-hint">{region ? `Selected: ${region}` : "Drag to turn · tap where it hurts"}</span>
       </div>
 
       <div className="orca-panel">
-        <div className="orca-steps" aria-hidden="true">
-          {["Where", "Describe", "Results"].map((s, i) => (
-            <span key={s} className={["pick", "ask", "result"].indexOf(step) >= i ? "is-on" : ""}>
-              {s}
-            </span>
-          ))}
+        <div className="orca-progress" aria-hidden="true">
+          <span style={{ width: `${(Math.min(step, 6) / 6) * 100}%` }} />
         </div>
 
-        {step === "pick" ? (
-          <div className="orca-body">
-            <strong className="orca-title">Where does it hurt?</strong>
-            <p className="orca-sub">Tap the model, or choose an area.</p>
-            <div className="orca-chips">
-              {REGIONS.map((r) => (
-                <button type="button" key={r} onClick={() => pick(r)}>
-                  {r}
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : null}
+        <div className="orca-body" ref={body} key={step}>
+          {step === 0 ? (
+            <>
+              <strong className="orca-title">{region ? "Is this where it hurts?" : "Where does it hurt?"}</strong>
+              <p className="orca-sub">
+                {region ? (
+                  <>
+                    <b>{region.replace(/^(Left|Right) /, "")}</b>
+                    {side ? ` · ${side.toLowerCase()} side` : ""}. Tap again to change it.
+                  </>
+                ) : (
+                  "Tap any of the model's 75 regions, or start from one of these."
+                )}
+              </p>
+              <div className="orca-chips">
+                {Object.entries(QUICK).map(([label, r]) => (
+                  <button type="button" key={label} className={region === r ? "is-on" : ""} onClick={() => pick(r)}>
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : null}
 
-        {step === "ask" ? (
-          <div className="orca-body">
-            <strong className="orca-title">
-              Pain in the <em>{region}</em>
-            </strong>
-            {QUESTIONS.map((q) => (
-              <div className="orca-q" key={q.key}>
-                <span>{q.label}</span>
-                <div className="orca-chips">
-                  {q.options.map((o) => (
-                    <button type="button" key={o} className={answers[q.key] === o ? "is-on" : ""} onClick={() => set(q.key, o)} aria-pressed={answers[q.key] === o}>
-                      {o}
+          {cur ? (
+            <>
+              <p className="orca-lead">{cur.head}</p>
+              <strong className="orca-title">{cur.q}</strong>
+              {cur.key === "severity" ? (
+                <div className="orca-sev">
+                  {SEV_COLORS.map((c, i) => (
+                    <button type="button" key={i} style={{ "--c": c }} className={a.severity === i + 1 ? "is-on" : ""} onClick={() => setA((s) => ({ ...s, severity: i + 1 }))} aria-pressed={a.severity === i + 1}>
+                      {i + 1}
                     </button>
                   ))}
                 </div>
-              </div>
-            ))}
-            <div className="orca-q">
-              <span>
-                How bad is it? <b>{answers.severity}/10</b>
-              </span>
-              <input type="range" min="1" max="10" value={answers.severity} onChange={(e) => set("severity", Number(e.target.value))} aria-label="Severity" />
-            </div>
-          </div>
-        ) : null}
+              ) : (
+                <div className={`orca-grid${cur.options.length > 5 ? " is-two" : ""}`}>
+                  {cur.options.map((o) => {
+                    const on = cur.multi ? a[cur.key].includes(o) : a[cur.key] === o;
+                    return (
+                      <button type="button" key={o} className={on ? "is-on" : ""} aria-pressed={on} onClick={() => (cur.multi ? toggle(cur.key, o) : setA((s) => ({ ...s, [cur.key]: o })))}>
+                        {o}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+              {cur.multi ? <p className="orca-tip">Choose all that fit.</p> : null}
+            </>
+          ) : null}
 
-        {step === "result" ? (
-          <div className="orca-body">
-            {flag ? <div className="orca-flag">{flag}</div> : null}
-            <strong className="orca-title">Likely causes</strong>
-            <ul className="orca-results">
-              {results.map((r) => (
-                <li key={r.name}>
-                  <div>
-                    <b>{r.name}</b>
-                    <span>{r.label}</span>
-                  </div>
-                  <span className="orca-bar">
-                    <span style={{ width: `${Math.round(r.pct * 100)}%` }} />
-                  </span>
-                  <p>{r.note}</p>
-                </li>
-              ))}
-            </ul>
-            <div className="orca-note">
-              <span>For the clinician</span>
-              <p>
-                Patient reports {answers.quality} pain in the {region}, {answers.onset} onset, present for {answers.duration}. Severity {answers.severity}/10, worse with{" "}
-                {answers.worse === "nothing" ? "nothing in particular" : answers.worse}, {answers.spreads === "yes" ? "radiating" : "not radiating"}.
-              </p>
-            </div>
-          </div>
-        ) : null}
+          {result ? (
+            <>
+              {flag ? <div className="orca-flag">{flag}</div> : null}
+              <div className="orca-best">
+                <Ring shown={result.shown} rest={result.rest} />
+                <div>
+                  <span>Our best guess</span>
+                  <strong>{result.best?.name}</strong>
+                  <p>{result.best?.desc}</p>
+                </div>
+              </div>
+              <div className="orca-label">Other possibilities</div>
+              <ul className="orca-results">
+                {result.shown.slice(1).map((r, i) => (
+                  <li key={r.name}>
+                    <i style={{ background: RING[i + 1] }} />
+                    <div>
+                      <b>{r.name}</b>
+                      <p>{r.desc}</p>
+                    </div>
+                    <span>{r.likelihood}%</span>
+                  </li>
+                ))}
+                {result.rest > 0 ? (
+                  <li>
+                    <i style={{ background: "#F44336" }} />
+                    <div>
+                      <b>Unsure / Something Else</b>
+                    </div>
+                    <span>{result.rest}%</span>
+                  </li>
+                ) : null}
+              </ul>
+              <div className="orca-note">
+                <span>For the clinician</span>
+                <p>
+                  {region}: {a.pain.filter((p) => !/none/i.test(p)).join(", ").toLowerCase() || "unspecified"} pain, {a.severity}/10.{" "}
+                  {a.onset.join(", ")}. {a.constant}.{" "}
+                  {a.swelling.some((s) => !/none/i.test(s)) ? `Visible: ${a.swelling.join(", ").toLowerCase()}.` : "No visible swelling or bruising."}
+                </p>
+              </div>
+            </>
+          ) : null}
+        </div>
 
         <div className="orca-foot">
-          {step === "ask" ? (
+          {step === 0 ? (
             <>
-              <button type="button" className="orca-ghost" onClick={() => setStep("pick")}>
-                Back
-              </button>
-              <button type="button" className="orca-go" disabled={!answered} onClick={() => setStep("result")}>
-                {answered ? "See results" : `${QUESTIONS.filter((q) => answers[q.key]).length}/${QUESTIONS.length} answered`}
+              <span className="orca-disclaimer">Demo only, not medical advice.</span>
+              <button type="button" className="orca-go" disabled={!region} onClick={() => setStep(1)}>
+                Continue
               </button>
             </>
-          ) : step === "result" ? (
+          ) : step < 6 ? (
             <>
-              <button type="button" className="orca-ghost" onClick={() => setStep("ask")}>
-                Edit answers
+              <button type="button" className="orca-ghost" onClick={() => setStep((s) => s - 1)}>
+                Back
               </button>
-              <button type="button" className="orca-go" onClick={() => { setRegion(null); setStep("pick"); }}>
-                Start over
+              <span className="orca-count">
+                {step} of 5
+              </span>
+              <button type="button" className="orca-go" disabled={!answered} onClick={() => setStep((s) => s + 1)}>
+                {step === 5 ? "See results" : "Continue"}
               </button>
             </>
           ) : (
-            <span className="orca-disclaimer">Demo only, not medical advice.</span>
+            <>
+              <button type="button" className="orca-ghost" onClick={() => setStep(1)}>
+                Edit answers
+              </button>
+              <button type="button" className="orca-go" onClick={() => pick(null)}>
+                New diagnosis
+              </button>
+            </>
           )}
         </div>
       </div>

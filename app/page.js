@@ -137,18 +137,18 @@ const features = {
 const orca = {
   logo: "/logos/orca.svg",
   badge: "2025 · Prototype",
-  type: "Health tech · 3D body model · AI triage",
+  type: "iOS + Android · Expo · React Native · three.js · LLM",
   title: "Orca: triage before the appointment",
   desc:
-    "A health-tech prototype built to take over the intake survey. Patients tap where it hurts on a 3D body model, describe it through the same structured questions a doctor asks, and get the likely causes. Patients get reassurance; doctors get a clean summary and skip the first ten minutes of questions.",
+    "A mobile app built to take over the intake survey. Patients tap where it hurts on a 3D anatomical model split into 75 clinical regions, then answer a short guided survey: visible signs, how the pain feels, how bad it is, how it started, and whether it’s constant. A backend asks an LLM for the likely diagnoses and their likelihoods, so patients get some reassurance and doctors start with the answers in hand.",
   points: [
-    "Pick the exact area on a 3D model you can turn, front and back",
-    "Structured intake: onset, character, triggers, duration, radiation and severity",
-    "Likely diagnoses, red-flag warnings, and a summary written for the clinician"
+    "3D body rendered with three.js on expo-gl, with rotate, pan, pinch-zoom and per-region hit testing",
+    "Six-step guided survey with help sheets, posted to an LLM diagnosis endpoint",
+    "Results as a likelihood ring: a best guess, other possibilities, and an “unsure” share"
   ],
-  tags: ["3D", "AI", "Health tech", "Triage"],
+  tags: ["React Native", "Expo", "three.js", "LLM"],
   links: [],
-  aside: "Prototype · details on request"
+  aside: "Built with a teammate · private repo"
 };
 
 const rxremind = {
@@ -157,7 +157,7 @@ const rxremind = {
   type: "Full stack · MongoDB · Express · React · Node · Twilio",
   title: "RxRemind: prescription reminders by text",
   desc:
-    "A full-stack app that texts patients when it’s time to take a dose. Prescriptions are created and edited in a React front end, stored in MongoDB through an Express REST API, and delivered as SMS reminders through Twilio, so it works on any phone with no app to install.",
+    "A full-stack prototype that texts patients when it’s time to take a dose. Prescriptions are created and edited in a React front end, stored in MongoDB through an Express REST API, and delivered as SMS reminders through Twilio, so it works on any phone with no app to install.",
   points: [
     "REST API with create, read, update and delete routes backed by Mongoose models",
     "Twilio messaging for reminders that reach any phone, smart or not",
@@ -207,7 +207,7 @@ const systems = [
 
 const skills = [
   { title: "Languages", items: ["TypeScript", "JavaScript", "Swift", "Python", "SQL", "Java"] },
-  { title: "Frontend & Apps", items: ["React", "Next.js", "SwiftUI", "Electron", "Tailwind", "Framer Motion", "Chrome Extensions (MV3)"] },
+  { title: "Frontend & Apps", items: ["React", "Next.js", "React Native / Expo", "SwiftUI", "Electron", "Tailwind", "Framer Motion", "Chrome Extensions (MV3)"] },
   { title: "AI & Automation", items: ["Agentic pipelines", "LLM orchestration", "Gemini", "Playwright", "On-device speech", "Apple NaturalLanguage", "Three.js"] },
   { title: "Backend & Ops", items: ["Node.js", "Express", "MongoDB", "Supabase", "PostgreSQL", "Offline-first sync", "Twilio", "GitHub Actions CI", "AWS EC2"] }
 ];
