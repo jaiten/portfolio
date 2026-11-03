@@ -78,7 +78,7 @@ const websites = [
     desc:
       "A bold, image-led site for a heavy-civil construction firm on Vancouver Island. Earthworks, parks, and waterfront work, framed to win bigger contracts.",
     tags: ["Next.js", "TypeScript", "Tailwind"],
-    url: "https://wilco-rho.vercel.app/",
+    url: "https://wilcocivil.ca/",
     label: "wilcocivil.ca",
     shot: "/shots/wilco.png",
     role: "Design → Build → Deploy"
@@ -157,16 +157,16 @@ const products = [
 
 const systems = [
   {
-    glyph: "◇",
-    type: "TypeScript · Playwright · Gemini 2.5",
+    logo: "/logos/agent.svg",
+    type: "Company build · TypeScript · Playwright · Gemini 2.5",
     live: false,
-    status: "2026",
+    status: "In production",
     title: "Agentic Browser Automation",
     desc:
-      "An autonomous browser agent that completes real-world workflows across dynamic websites, including navigation, form completion, and multi-step task execution. A hybrid architecture reserves LLM calls for decision-making while deterministic systems handle execution, cutting token usage by ~33%.",
+      "Built for a company whose team was losing hours to repetitive work inside web portals. The agent navigates dynamic sites, fills forms, and carries multi-step workflows through to completion on the team’s behalf. A hybrid architecture reserves LLM calls for decisions while deterministic code handles execution, cutting token usage by ~33% and keeping runs predictable enough to trust in day-to-day operations.",
     tags: ["TypeScript", "Playwright", "Gemini 2.5"],
     url: null,
-    label: "Private build · details on request"
+    label: "Client work · details on request"
   }
 ];
 
@@ -211,7 +211,7 @@ const Arrow = () => (
   </svg>
 );
 
-function Feature({ f, demo, label }) {
+function Feature({ f, demo, label, stage = "" }) {
   return (
     <Reveal as="article" className="feature">
       <div className="feature-copy">
@@ -244,7 +244,7 @@ function Feature({ f, demo, label }) {
           ))}
         </div>
       </div>
-      <div className="feature-demo">
+      <div className={`feature-demo is-dark ${stage}`.trim()}>
         <span className="feature-demo-label">
           <span className="status-dot" /> {label}
         </span>
@@ -391,7 +391,7 @@ export default function Page() {
               </p>
             </Reveal>
 
-            <Feature f={features.orbit} demo={<OrbitDemo />} label="Live demo · type a task" />
+            <Feature f={features.orbit} demo={<OrbitDemo />} label="Live demo · try smart add" />
 
             <div className="card-grid">
               {products.map((c) => (
@@ -449,7 +449,7 @@ export default function Page() {
               </p>
             </Reveal>
 
-            <Feature f={features.euno} demo={<EunoDemo />} label="Live demo · search the notes" />
+            <Feature f={features.euno} demo={<EunoDemo />} label="Live demo · search the notes" stage="is-euno" />
 
             <div className="card-grid is-single">
               {systems.map((c) => {
@@ -470,8 +470,8 @@ export default function Page() {
                   {...linkProps}
                 >
                   <div className="scard-top">
-                    <span className="scard-glyph" aria-hidden="true">
-                      {c.glyph}
+                    <span className="scard-glyph logo" aria-hidden="true">
+                      <img src={c.logo} alt="" width="54" height="54" />
                     </span>
                     <span className="scard-badge">{c.status}</span>
                   </div>

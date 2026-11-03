@@ -9,7 +9,7 @@ const targets = [
   { name: "winratio", url: "https://winratio.vercel.app/" },
   { name: "north", url: "https://northfocus.app/" },
   { name: "shoebox", url: "https://shoebox-six.vercel.app/" },
-  { name: "wilco", url: "https://wilco-rho.vercel.app/" }
+  { name: "wilco", url: "https://wilcocivil.ca/" }
 ];
 
 const W = 1440;

@@ -1073,6 +1073,7 @@ img {
   border: 1px solid var(--line-soft);
   padding: clamp(2.6rem, 4vw, 3.2rem) clamp(0.8rem, 2.4vw, 2rem) clamp(0.9rem, 2.4vw, 2rem);
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   min-width: 0;
   background-image: radial-gradient(rgba(22, 20, 13, 0.07) 1px, transparent 1px);
@@ -1101,27 +1102,29 @@ img {
   }
 }
 
-/* ---- Orbit demo (uses Orbit's own design tokens) ---- */
+/* ---- Orbit demo (Orbit's dark theme tokens) ---- */
 .odemo {
-  --o-canvas: #f5f5f7;
-  --o-surface: #ffffff;
-  --o-ink: #1d1d1f;
-  --o-muted: #6d6d73;
-  --o-line: #e4e4e8;
+  --o-canvas: #141416;
+  --o-side: #1b1b1d;
+  --o-surface: #1f1f21;
+  --o-raise: #26262a;
+  --o-ink: #f5f5f7;
+  --o-muted: #a6a6ad;
+  --o-line: #323236;
   --o-coral: #e87359;
-  --o-coral-text: #b74f38;
   width: 100%;
-  max-width: 470px;
+  max-width: 520px;
   background: var(--o-canvas);
   color: var(--o-ink);
-  border-radius: 14px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 24px 50px -28px rgba(22, 20, 13, 0.45), 0 2px 6px rgba(22, 20, 13, 0.06);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5), 0 40px 80px -30px rgba(0, 0, 0, 0.85),
+    0 0 90px -30px rgba(232, 115, 89, 0.25);
   font-family: var(--font-sans);
   font-size: 13.5px;
   line-height: 1.35;
-  overflow: hidden;
   position: relative;
+  color-scheme: dark;
 }
 .odemo button {
   font: inherit;
@@ -1136,9 +1139,10 @@ img {
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  padding: 0.6rem 0.85rem;
-  background: #ebebee;
+  padding: 0.6rem 0.8rem;
+  background: var(--o-side);
   border-bottom: 1px solid var(--o-line);
+  border-radius: 16px 16px 0 0;
 }
 .odemo-mark svg {
   display: block;
@@ -1151,34 +1155,45 @@ img {
 .odemo-nav {
   margin-left: auto;
   display: flex;
-  gap: 0.2rem;
+  gap: 0.15rem;
   font-size: 12px;
   color: var(--o-muted);
 }
 .odemo-nav > * {
-  padding: 0.22rem 0.55rem;
-  border-radius: 6px;
+  padding: 0.24rem 0.55rem;
+  border-radius: 7px;
 }
 .odemo-nav b {
   font-weight: 600;
   color: var(--o-ink);
-  background: var(--o-surface);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  background: var(--o-raise);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+.odemo-win {
+  display: flex;
+  gap: 0.45rem;
+  margin-left: 0.6rem;
+}
+.odemo-win i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #3a3a3f;
 }
 .odemo-body {
-  padding: 1rem 1rem 0.6rem;
+  padding: 1.05rem 1rem 0.5rem;
 }
 .odemo-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.8rem;
 }
 .odemo-head strong {
   display: block;
-  font-size: 1.3rem;
+  font-size: 1.45rem;
   font-weight: 650;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.03em;
 }
 .odemo-head span {
   color: var(--o-muted);
@@ -1192,22 +1207,22 @@ img {
   font-weight: 600;
   font-size: 12px;
 }
-.odemo-progress span {
-  color: var(--o-ink);
+.odemo-cols {
+  display: grid;
+  gap: 0.6rem;
 }
-.odemo-tasks,
-.odemo-habits {
+.odemo-card {
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem;
+  background: var(--o-surface);
+  border: 1px solid var(--o-line);
+  border-radius: 12px;
+}
+.odemo-card ul {
   list-style: none;
   margin: 0;
   padding: 0;
-  background: var(--o-surface);
-  border: 1px solid var(--o-line);
-  border-radius: 10px;
-  overflow: hidden;
-}
-.odemo-tasks li + li,
-.odemo-habits li + li {
-  border-top: 1px solid var(--o-line);
 }
 .odemo-tasks button,
 .odemo-habits button {
@@ -1215,28 +1230,37 @@ img {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  padding: 0.62rem 0.75rem;
+  padding: 0.55rem 0.6rem;
+  border-radius: 9px;
   transition: background 0.2s ease;
 }
 .odemo-tasks button:hover,
 .odemo-habits button:hover {
-  background: #fafafb;
+  background: rgba(255, 255, 255, 0.04);
 }
 .odemo-tick {
   flex: none;
-  width: 18px;
-  height: 18px;
+  width: 19px;
+  height: 19px;
   border-radius: 50%;
-  border: 1.6px solid #c7c7cc;
+  border: 1.6px solid #55555c;
   display: grid;
   place-items: center;
-  color: #fff;
-  transition: background 0.25s ease, border-color 0.25s ease, transform 0.3s var(--ease-ios);
+  color: #141416;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.45s var(--ease-ios);
 }
-.odemo-tasks li.is-done .odemo-tick {
+.odemo-tick path {
+  stroke-dasharray: 16;
+  stroke-dashoffset: 16;
+  transition: stroke-dashoffset 0.35s ease 0.05s;
+}
+.odemo-tick.is-on {
   background: var(--o-coral);
   border-color: var(--o-coral);
-  transform: scale(1.06);
+  transform: scale(1.08);
+}
+.odemo-tick.is-on path {
+  stroke-dashoffset: 0;
 }
 .odemo-title {
   flex: 1;
@@ -1244,12 +1268,12 @@ img {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  transition: color 0.25s ease;
+  transition: color 0.3s ease;
 }
 .odemo-tasks li.is-done .odemo-title {
-  color: var(--o-muted);
+  color: #6f6f76;
   text-decoration: line-through;
-  text-decoration-color: rgba(109, 109, 115, 0.6);
+  text-decoration-color: rgba(166, 166, 173, 0.5);
 }
 .odemo-meta {
   display: flex;
@@ -1259,15 +1283,28 @@ img {
   white-space: nowrap;
 }
 .odemo-tag {
-  color: var(--o-coral-text);
+  color: var(--o-coral);
 }
 .odemo-label {
-  margin: 0.95rem 0 0.4rem 0.15rem;
-  font-size: 11px;
+  padding: 0.45rem 0.6rem 0.2rem;
+  font-size: 10.5px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--o-muted);
+}
+.odemo-dot {
+  flex: none;
+  width: 19px;
+  height: 19px;
+  border-radius: 6px;
+  border: 1.6px solid var(--h);
+  opacity: 0.85;
+  transition: background 0.3s ease, transform 0.45s var(--ease-ios);
+}
+.odemo-dot.is-on {
+  background: var(--h);
+  transform: scale(1.08);
 }
 .odemo-week {
   display: flex;
@@ -1277,129 +1314,179 @@ img {
   width: 11px;
   height: 11px;
   border-radius: 3px;
-  background: #ececef;
-  transition: background 0.3s ease;
+  background: #2c2c30;
+  transition: background 0.35s ease, transform 0.45s var(--ease-ios);
+}
+.odemo-week span.is-on {
+  background: var(--h);
 }
 .odemo-week span.is-today {
-  outline: 1.5px solid rgba(29, 29, 31, 0.35);
-  outline-offset: 1px;
+  box-shadow: 0 0 0 1.5px var(--o-canvas), 0 0 0 2.5px rgba(245, 245, 247, 0.35);
+}
+.odemo-week span.is-today.is-on {
+  transform: scale(1.12);
 }
 .odemo-count {
-  width: 3.4em;
+  width: 2.4em;
   text-align: right;
   font-size: 12px;
   color: var(--o-muted);
   font-variant-numeric: tabular-nums;
 }
 .is-fresh {
-  animation: odemo-in 0.55s var(--ease-ios);
+  animation: odemo-in 0.6s var(--ease-ios);
 }
 @keyframes odemo-in {
   from {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-8px) scale(0.98);
   }
 }
 .odemo-add {
-  padding: 0.6rem 1rem 0.9rem;
+  padding: 0.55rem 1rem 0.95rem;
   position: relative;
 }
 .odemo-field {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
   background: var(--o-surface);
   border: 1px solid var(--o-line);
   border-radius: 12px;
-  padding: 0.5rem 0.6rem 0.5rem 0.7rem;
-  box-shadow: 0 4px 14px -8px rgba(0, 0, 0, 0.18);
+  padding: 0.35rem 0.35rem 0.35rem 0.75rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .odemo-field:focus-within {
   border-color: var(--o-coral);
-  box-shadow: 0 0 0 3px rgba(232, 115, 89, 0.16);
+  box-shadow: 0 0 0 3px rgba(232, 115, 89, 0.2);
 }
 .odemo-plus {
-  color: var(--o-coral-text);
-  font-weight: 600;
-  font-size: 1.05rem;
-  line-height: 1;
+  color: var(--o-muted);
+  display: grid;
 }
 .odemo-field input {
   flex: 1;
   min-width: 0;
+  height: 2.1rem;
   border: 0;
   outline: 0;
   background: none;
   font: inherit;
+  font-size: 14.5px;
   color: var(--o-ink);
 }
 .odemo-field input::placeholder {
-  color: #a1a1a7;
+  color: #6f6f76;
+}
+.odemo .odemo-go {
+  flex: none;
+  height: 2.1rem;
+  padding: 0 1rem;
+  border-radius: 9px;
+  background: var(--o-coral);
+  color: #141416;
+  font-weight: 600;
+  transition: transform 0.25s var(--ease-ios), filter 0.2s ease;
+}
+.odemo .odemo-go:hover {
+  filter: brightness(1.08);
+}
+.odemo .odemo-go.is-pressed,
+.odemo .odemo-go:active {
+  transform: scale(0.93);
+}
+.odemo-chiprow {
+  min-height: 2rem;
+  margin-top: 0.55rem;
+  display: flex;
+  align-items: center;
 }
 .odemo-chip {
   display: inline-flex;
-  flex: none;
-  max-width: 55%;
-  overflow: hidden;
-  border-radius: 7px;
-  background: #1d1d1f;
-  color: #f5f5f7;
-  font-size: 11px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 100px;
+  background: rgba(232, 115, 89, 0.14);
+  color: var(--o-coral);
+  font-size: 12.5px;
   font-weight: 500;
-  white-space: nowrap;
 }
-.odemo-chip span {
-  padding: 0.22rem 0.45rem;
+.odemo-chip > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  animation: odemo-part 0.35s var(--ease-ios);
 }
-.odemo-chip span + span {
-  border-left: 1px solid rgba(255, 255, 255, 0.18);
+.odemo-chip i {
+  font-style: normal;
+  opacity: 0.5;
 }
-.odemo-chip span:first-child {
-  background: var(--o-coral-text);
+@keyframes odemo-part {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
 }
-.odemo-try {
+.odemo-hint {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.3rem;
-  margin-top: 0.6rem;
   font-size: 11.5px;
   color: var(--o-muted);
 }
-.odemo-try > span {
-  margin-right: 0.15rem;
-}
-.odemo .odemo-try button {
-  padding: 0.18rem 0.5rem;
+.odemo .odemo-hint button {
+  padding: 0.2rem 0.55rem;
   border-radius: 100px;
   border: 1px solid var(--o-line);
-  background: var(--o-surface);
-  color: var(--o-ink);
-  transition: border-color 0.2s ease, color 0.2s ease;
+  color: var(--o-muted);
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
-.odemo .odemo-try button:hover {
-  border-color: var(--o-coral);
-  color: var(--o-coral-text);
+.odemo .odemo-hint button:hover {
+  color: var(--o-ink);
+  background: rgba(255, 255, 255, 0.05);
 }
 .odemo-toast {
   position: absolute;
   left: 50%;
-  bottom: calc(100% + 0.2rem);
+  bottom: calc(100% + 0.3rem);
   transform: translate(-50%, 6px);
-  padding: 0.4rem 0.75rem;
+  padding: 0.42rem 0.8rem;
   border-radius: 100px;
-  background: #1d1d1f;
-  color: #f5f5f7;
+  background: #f5f5f7;
+  color: #141416;
   font-size: 12px;
+  font-weight: 500;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease, transform 0.4s var(--ease-ios);
+  box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.3s ease, transform 0.45s var(--ease-ios);
+  z-index: 2;
 }
 .odemo-toast.is-on {
   opacity: 1;
   transform: translate(-50%, 0);
+}
+.feature-demo.is-dark {
+  background-color: #0f0f11;
+  border-color: rgba(255, 255, 255, 0.06);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    radial-gradient(circle at 70% 20%, rgba(232, 115, 89, 0.12), transparent 55%);
+  background-size: 16px 16px, 100% 100%;
+}
+.feature-demo.is-dark .feature-demo-label {
+  color: rgba(245, 245, 247, 0.55);
+}
+.feature-demo.is-dark.is-euno {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    radial-gradient(circle at 30% 30%, rgba(110, 160, 130, 0.16), transparent 55%);
+}
+.feature-demo.is-dark .edemo-phone {
+  background: #2a2f2b;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 40px 80px -30px rgba(0, 0, 0, 0.9);
 }
 
 /* ---- Euno demo ---- */
@@ -1798,6 +1885,18 @@ img {
   .odemo-week span {
     width: 8px;
     height: 8px;
+  }
+  .odemo-nav > span,
+  .odemo-win {
+    display: none;
+  }
+  .odemo-week {
+    display: none;
+  }
+  .odemo-body,
+  .odemo-add {
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
   }
 }
 
