@@ -14,14 +14,12 @@ const EXAMPLES = ["dentist fri 9am #health", "book ideas someday", "water plants
 const START_TASKS = [
   { id: 1, title: "Send the invoice", time: 600, list: "work", done: true },
   { id: 2, title: "Groceries for the week", time: null, list: null, done: false },
-  { id: 3, title: "Review onboarding copy", time: 900, list: "work", done: false },
-  { id: 4, title: "Book a haircut", time: null, list: null, done: false }
+  { id: 3, title: "Review onboarding copy", time: 900, list: "work", done: false }
 ];
 
 const START_HABITS = [
   { id: 1, title: "Read 20 pages", days: [1, 1, 0, 1, 1, 1, 0], color: "#6E8C78" },
-  { id: 2, title: "Walk outside", days: [0, 1, 1, 0, 1, 0, 0], color: "#8C85BF" },
-  { id: 3, title: "Drink water", days: [1, 1, 1, 1, 0, 1, 0], color: "#53AAA4" }
+  { id: 2, title: "Walk outside", days: [0, 1, 1, 0, 1, 0, 0], color: "#8C85BF" }
 ];
 
 const HABIT_COLORS = ["#D19E4D", "#53AAA4", "#729ED2", "#E87359"];
@@ -54,6 +52,20 @@ export default function OrbitDemo() {
   const toastTimer = useRef(null);
   const root = useRef(null);
   const ran = useRef(false);
+  const body = useRef(null);
+  const [lastAdded, setLastAdded] = useState(null);
+
+  useEffect(() => {
+    if (lastAdded === null) return;
+    const el = body.current;
+    const row = el && el.querySelector(`[data-id="${lastAdded}"]`);
+    if (!row) return;
+    const top = row.offsetTop - el.offsetTop;
+    const bottom = top + row.offsetHeight;
+    if (top < el.scrollTop || bottom > el.scrollTop + el.clientHeight) {
+      el.scrollTo({ top: Math.max(0, bottom - el.clientHeight + 12), behavior: "smooth" });
+    }
+  }, [lastAdded]);
   const touchedRef = useRef(false);
 
   useEffect(() => {
@@ -78,12 +90,14 @@ export default function OrbitDemo() {
     const id = nextId.current++;
     if (r.kind === "habit") {
       setHabits((h) => [
-        ...h.slice(1),
+        ...h.slice(-7),
         { id, title: r.title, days: [0, 0, 0, 0, 0, 0, 0], color: HABIT_COLORS[id % HABIT_COLORS.length], fresh: true }
       ]);
       flash(`New habit · ${parts.slice(1).join(" · ")}`);
+      setLastAdded(id);
     } else if (r.date === dayKey(new Date())) {
-      setTasks((t) => [...t.slice(1), { id, title: r.title, time: r.time, list: r.list, done: false, fresh: true }]);
+      setTasks((t) => [...t.slice(-11), { id, title: r.title, time: r.time, list: r.list, done: false, fresh: true }]);
+      setLastAdded(id);
     } else {
       flash(`Added to ${parts.slice(1).join(" · ")}`);
     }
@@ -176,7 +190,7 @@ export default function OrbitDemo() {
         </span>
       </div>
 
-      <div className="odemo-body">
+      <div className="odemo-body" ref={body}>
         <div className="odemo-head">
           <div>
             <strong>Today</strong>
@@ -207,7 +221,7 @@ export default function OrbitDemo() {
         <div className="odemo-cols">
           <ul className="odemo-card odemo-tasks">
             {tasks.map((t) => (
-              <li key={t.id} className={`${t.done ? "is-done" : ""} ${t.fresh ? "is-fresh" : ""}`}>
+              <li key={t.id} data-id={t.id} className={`${t.done ? "is-done" : ""} ${t.fresh ? "is-fresh" : ""}`}>
                 <button type="button" onClick={() => toggleTask(t.id)} aria-pressed={t.done}>
                   <Tick done={t.done} />
                   <span className="odemo-title">{t.title}</span>
@@ -226,7 +240,7 @@ export default function OrbitDemo() {
               {habits.map((h) => {
                 const count = h.days.reduce((a, b) => a + b, 0);
                 return (
-                  <li key={h.id} className={h.fresh ? "is-fresh" : ""}>
+                  <li key={h.id} data-id={h.id} className={h.fresh ? "is-fresh" : ""}>
                     <button
                       type="button"
                       onClick={() => toggleHabit(h.id)}

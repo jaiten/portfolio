@@ -1114,6 +1114,10 @@ img {
   --o-coral: #e87359;
   width: 100%;
   max-width: 520px;
+  /* A fixed window, like Orbit's own: content scrolls inside, the frame never grows. */
+  height: 560px;
+  display: flex;
+  flex-direction: column;
   background: var(--o-canvas);
   color: var(--o-ink);
   border-radius: 16px;
@@ -1136,6 +1140,7 @@ img {
   text-align: left;
 }
 .odemo-bar {
+  flex: none;
   display: flex;
   align-items: center;
   gap: 0.55rem;
@@ -1181,7 +1186,15 @@ img {
   background: #3a3a3f;
 }
 .odemo-body {
-  padding: 1.05rem 1rem 0.5rem;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1.05rem 1rem 0.9rem;
+  scrollbar-width: thin;
+  scrollbar-color: #3a3a3f transparent;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 18px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 18px), transparent);
 }
 .odemo-head {
   display: flex;
@@ -1343,6 +1356,7 @@ img {
   }
 }
 .odemo-add {
+  flex: none;
   padding: 0.55rem 1rem 0.95rem;
   position: relative;
 }

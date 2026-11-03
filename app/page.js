@@ -171,10 +171,10 @@ const systems = [
 ];
 
 const skills = [
-  { title: "Languages", items: ["TypeScript", "JavaScript", "Swift", "Python", "Java", "SQL"] },
-  { title: "Frontend", items: ["React", "Next.js", "SwiftUI", "Electron", "Tailwind", "Framer Motion"] },
-  { title: "AI / LLM", items: ["Agentic pipelines", "LLM orchestration", "On-device speech", "Prompt eng.", "Gemini"] },
-  { title: "Backend & Cloud", items: ["Node.js", "PostgreSQL", "Supabase", "AWS EC2", "Linux", "Playwright"] }
+  { title: "Languages", items: ["TypeScript", "JavaScript", "Swift", "Python", "SQL", "Java"] },
+  { title: "Frontend & Apps", items: ["React", "Next.js", "SwiftUI", "Electron", "Tailwind", "Framer Motion", "Chrome Extensions (MV3)"] },
+  { title: "AI & Automation", items: ["Agentic pipelines", "LLM orchestration", "Gemini", "Playwright", "On-device speech", "Apple NaturalLanguage"] },
+  { title: "Backend & Ops", items: ["Node.js", "Supabase", "PostgreSQL", "Offline-first sync", "GitHub Actions CI", "AWS EC2", "Linux"] }
 ];
 
 const contactLinks = [
