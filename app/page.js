@@ -136,11 +136,11 @@ const features = {
 
 const orca = {
   logo: "/logos/orca.svg",
-  badge: "In development",
+  badge: "2025 · Prototype",
   type: "Health tech · 3D body model · AI triage",
   title: "Orca: triage before the appointment",
   desc:
-    "A health-tech app that takes over the intake survey. Patients tap where it hurts on a 3D body model, describe it through the same structured questions a doctor asks, and get the likely causes. Patients get reassurance; doctors get a clean summary and skip the first ten minutes of questions.",
+    "A health-tech prototype built to take over the intake survey. Patients tap where it hurts on a 3D body model, describe it through the same structured questions a doctor asks, and get the likely causes. Patients get reassurance; doctors get a clean summary and skip the first ten minutes of questions.",
   points: [
     "Pick the exact area on a 3D model you can turn, front and back",
     "Structured intake: onset, character, triggers, duration, radiation and severity",
@@ -148,7 +148,7 @@ const orca = {
   ],
   tags: ["3D", "AI", "Health tech", "Triage"],
   links: [],
-  aside: "Private build · details on request"
+  aside: "Prototype · details on request"
 };
 
 const rxremind = {
