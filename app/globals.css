@@ -978,7 +978,7 @@ img {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 1rem;
   position: relative;
 }
@@ -986,6 +986,15 @@ img {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
+  min-width: 0;
+}
+.scard-foot .scard-link {
+  flex: none;
+}
+@media (max-width: 560px) {
+  .scard-foot {
+    flex-wrap: wrap;
+  }
 }
 .scard .tag,
 .feature .tag {
@@ -1007,11 +1016,10 @@ img {
 .scard:hover .scard-link,
 .feature .scard-link:hover {
   color: var(--accent-deep);
-  gap: 0.7rem;
 }
 .scard:hover .scard-link .arrow,
 .feature .scard-link:hover .arrow {
-  transform: translate(2px, -2px);
+  transform: translate(4px, -3px);
 }
 .scard.is-static .scard-link {
   color: var(--ink-3);
@@ -1103,6 +1111,14 @@ img {
 }
 
 /* ---- Orbit demo (Orbit's dark theme tokens) ---- */
+/* Orbit's apps use the system UI face (Segoe UI Variable on Windows, SF Pro on
+   Apple). Inter, self-hosted like orbit-web, covers everything else. */
+@font-face {
+  font-family: "Orbit Inter";
+  src: url("/fonts/Inter-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
 .odemo {
   --o-canvas: #141416;
   --o-side: #1b1b1d;
@@ -1124,7 +1140,10 @@ img {
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5), 0 40px 80px -30px rgba(0, 0, 0, 0.85),
     0 0 90px -30px rgba(232, 115, 89, 0.25);
-  font-family: var(--font-sans);
+  font-family: "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", -apple-system,
+    BlinkMacSystemFont, "SF Pro Text", "Orbit Inter", system-ui, sans-serif;
+  font-feature-settings: normal;
+  letter-spacing: 0;
   font-size: 13.5px;
   line-height: 1.35;
   position: relative;
