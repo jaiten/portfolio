@@ -5,6 +5,8 @@ import Cursor from "@/components/cursor";
 import CopyEmail from "@/components/copy-email";
 import ProjectShot from "@/components/project-shot";
 import SkillsGrid from "@/components/skills-grid";
+import OrbitDemo from "@/components/orbit-demo";
+import EunoDemo from "@/components/euno-demo";
 
 /* ----------------------------- data ----------------------------- */
 
@@ -17,8 +19,10 @@ const marquee = [
   "Node.js",
   "Playwright",
   "Chrome Extensions",
+  "SwiftUI",
+  "Electron",
+  "Supabase",
   "Gemini 2.5",
-  "Whisper",
   "PostgreSQL",
   "AWS"
 ];
@@ -81,16 +85,52 @@ const websites = [
   },
   {
     title: "Orbit",
-    kicker: "A modern web presence",
+    kicker: "A calm planner, sold calmly",
     desc:
-      "A clean, modern site built to establish a strong online presence. Designed and shipped end-to-end with a focus on clarity, performance, and a polished user experience.",
-    tags: ["Next.js", "TypeScript", "Tailwind"],
+      "The marketing home for Orbit, my planner for iPhone and Windows. Live device frames, a working quick-add demo that runs the app’s own parser, and motion that stays quiet enough to match the product.",
+    tags: ["Next.js", "TypeScript", "Tailwind", "Motion"],
     url: "https://orbit-web-inky.vercel.app/",
     label: "orbithabit.app",
     shot: "/shots/orbit.png",
-    role: "Design → Build → Deploy"
+    role: "End-to-end product"
   }
 ];
+
+const features = {
+  orbit: {
+    logo: "/logos/orbit.svg",
+    badge: "Beta",
+    type: "iPhone + Windows · SwiftUI · Electron · Supabase",
+    title: "Orbit: a calm daily planner",
+    desc:
+      "A local-first planner that turns one line of text into a task or a habit, keeps the day manageable, and syncs between an iPhone app and a Windows app. Works fully offline; sync adds a durable outbox, tombstones, revision checks, and conflict review on top.",
+    points: [
+      "One shared phrase parser and test suite drive quick add on both platforms",
+      "Widgets, Live Activities, Siri and Shortcuts on iOS; tray, global shortcut and notifications on Windows",
+      "Auto-updating Windows releases shipped from CI"
+    ],
+    tags: ["SwiftUI", "Electron", "Supabase", "Local-first"],
+    links: [
+      { label: "Visit orbithabit.app", href: "https://orbit-web-inky.vercel.app/" },
+      { label: "Download for Windows", href: "https://github.com/jaiten/Orbit/releases/latest" }
+    ]
+  },
+  euno: {
+    logo: "/logos/euno.svg",
+    badge: "In progress",
+    type: "iOS · SwiftUI · On-device speech + NLP",
+    title: "Euno: a private voice journal",
+    desc:
+      "An iPhone voice journal for finding what you talked about and noticing how you felt. Recordings are transcribed on the device in 45-second chunks, then searched, tagged with suggested topics, and measured for pace and quiet audio. No server, no accounts, no paid AI.",
+    points: [
+      "Persistent processing queue with restart recovery and per-note retries",
+      "Voice Memos share extension and SHA-256 duplicate detection for large libraries",
+      "Honest signals: mood is self-labelled, sentiment is lexical, nothing is diagnosed"
+    ],
+    tags: ["Swift", "Speech", "NaturalLanguage", "XCTest"],
+    links: [{ label: "View on GitHub", href: "https://github.com/jaiten/euno" }]
+  }
+};
 
 const products = [
   {
@@ -127,26 +167,14 @@ const systems = [
     tags: ["TypeScript", "Playwright", "Gemini 2.5"],
     url: null,
     label: "Private build · details on request"
-  },
-  {
-    glyph: "◉",
-    type: "React · Node.js · Whisper · Gemini",
-    live: false,
-    status: "In progress",
-    title: "Voice Note Analyzer",
-    desc:
-      "A full-stack app that turns voice and text into structured insight: actions, mood, and themes. Audio runs through Whisper, semantic analysis through Gemini, with persistent storage for longitudinal tracking over time.",
-    tags: ["React", "Node.js", "Whisper", "Gemini"],
-    url: "https://github.com/jaiten/voicemood",
-    label: "View on GitHub"
   }
 ];
 
 const skills = [
-  { title: "Languages", items: ["TypeScript", "JavaScript", "Python", "Java", "C", "SQL"] },
-  { title: "Frontend", items: ["React", "Next.js", "React Native", "Tailwind", "Framer Motion"] },
-  { title: "AI / LLM", items: ["Agentic pipelines", "LLM orchestration", "Prompt eng.", "Whisper", "Gemini"] },
-  { title: "Backend & Cloud", items: ["Node.js", "PostgreSQL", "MongoDB", "AWS EC2", "Linux", "Playwright"] }
+  { title: "Languages", items: ["TypeScript", "JavaScript", "Swift", "Python", "Java", "SQL"] },
+  { title: "Frontend", items: ["React", "Next.js", "SwiftUI", "Electron", "Tailwind", "Framer Motion"] },
+  { title: "AI / LLM", items: ["Agentic pipelines", "LLM orchestration", "On-device speech", "Prompt eng.", "Gemini"] },
+  { title: "Backend & Cloud", items: ["Node.js", "PostgreSQL", "Supabase", "AWS EC2", "Linux", "Playwright"] }
 ];
 
 const contactLinks = [
@@ -157,7 +185,7 @@ const contactLinks = [
 
 const proof = [
   { value: "6", label: "production sites shipped" },
-  { value: "2", label: "browser extensions live" },
+  { value: "3", label: "apps & extensions shipped" },
   { value: "300+", label: "devices managed" },
   { value: "20%", label: "fewer recurring IT issues" }
 ];
@@ -182,6 +210,49 @@ const Arrow = () => (
     <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
+
+function Feature({ f, demo, label }) {
+  return (
+    <Reveal as="article" className="feature">
+      <div className="feature-copy">
+        <div className="scard-top">
+          <span className="scard-glyph logo" aria-hidden="true">
+            <img src={f.logo} alt="" width="54" height="54" />
+          </span>
+          <span className="scard-badge">{f.badge}</span>
+        </div>
+        <span className="scard-type">{f.type}</span>
+        <h3>{f.title}</h3>
+        <p>{f.desc}</p>
+        <ul className="feature-points">
+          {f.points.map((pt) => (
+            <li key={pt}>{pt}</li>
+          ))}
+        </ul>
+        <div className="scard-tags">
+          {f.tags.map((t) => (
+            <span className="tag" key={t}>
+              {t}
+            </span>
+          ))}
+        </div>
+        <div className="feature-links">
+          {f.links.map((l) => (
+            <a className="scard-link" key={l.href} href={l.href} target="_blank" rel="noreferrer">
+              {l.label} <Arrow />
+            </a>
+          ))}
+        </div>
+      </div>
+      <div className="feature-demo">
+        <span className="feature-demo-label">
+          <span className="status-dot" /> {label}
+        </span>
+        {demo}
+      </div>
+    </Reveal>
+  );
+}
 
 /* ----------------------------- page ----------------------------- */
 
@@ -311,14 +382,16 @@ export default function Page() {
               <div>
                 <span className="section-index">02 · Product Engineering</span>
                 <h2>
-                  Browser <span className="serif">extensions</span>
+                  Apps &amp; <span className="serif">extensions</span>
                 </h2>
               </div>
               <p className="section-note">
                 Self-published tools with real users and real constraints—from
-                rule-engine architecture to UX, branding, and distribution.
+                sync engines and rule engines to UX, branding, and distribution.
               </p>
             </Reveal>
+
+            <Feature f={features.orbit} demo={<OrbitDemo />} label="Live demo · type a task" />
 
             <div className="card-grid">
               {products.map((c) => (
@@ -371,12 +444,14 @@ export default function Page() {
                 </h2>
               </div>
               <p className="section-note">
-                Agentic pipelines that reserve LLM calls for judgment and lean on
-                deterministic execution for everything else.
+                Agents that reserve LLM calls for judgment, and on-device models
+                that keep personal data where it belongs.
               </p>
             </Reveal>
 
-            <div className="card-grid">
+            <Feature f={features.euno} demo={<EunoDemo />} label="Live demo · search the notes" />
+
+            <div className="card-grid is-single">
               {systems.map((c) => {
                 const linkProps = c.url
                   ? {
@@ -512,7 +587,7 @@ export default function Page() {
               <h2 className="contact-head">
                 Give me the problem.
                 <br />
-                <span className="serif accent">I’ll bring the build.</span>
+                <span className="serif accent">I’ll create the solution.</span>
               </h2>
             </Reveal>
             <Reveal className="contact-row" delay={100}>
